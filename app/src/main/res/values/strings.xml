@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">MassCustom</string>
+
+    // Common
+    <string name="str_common_percentage">%</string>
+    <string name="str_common_exit_application">한번 더 클릭하면 앱이 종료됩니다.</string>
+    <string name="str_common_unknown">UNKNOWN</string>
+
+    // Splash
+    <string name="str_splash_welcome">WELCOME</string>
+
+    // Bluetooth
+    <string name="str_bluetooth_title">Bluetooth 기기 검색</string>
+    <string name="str_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="str_bluetooth_unknown_characteristic">Unknown characteristic</string>
+    <string name="str_bluetooth_unknown_service">Unknown service</string>
+
+    // Main
+    <string name="str_main_title">Main</string>
+    <string name="str_main_list_measure">심박 측정</string>
+    <string name="str_main_list_statistic">통계</string>
+    <string name="str_main_list_battery">배터리</string>
+
+    // Measure
+    <string name="str_measure_title">심박 측정</string>
+    <string name="str_measure_info">심박 측정 중입니다.\n잠시만 기다려 주십시오.\n정확한 결과값을 위해 말하거나 움직이지 마십시오.</string>
+    <string name="str_measure_result_info">정상 성인의 안정시 분당 심박수 평균은 60~80 bpm 입니다.\n이를 참고하여 평균 범위를 벗어났을 경우 가까운 병원을 방문하여\n정확한 검진을 받아보시길 권장합니다.</string>
+    <string name="str_measure_result_ex_info">현재의 상태를 입력하여 주십시오.\nEx) 안정, 피로, 운동</string>
+    <string name="str_measure_save_result">저장</string>
+    <string name="str_measure_preparing">PREPARING</string>
+
+    // Statistic
+    <string name="str_statistic_title">통계</string>
+    <string name="str_statistic_morning_avr">오전 평균</string>
+    <string name="str_statistic_afternoon_avr">오후 평균</string>
+    <string name="str_statistic_day_avr">일간 평균</string>
+    <string name="str_statistic_month">월간</string>
+    <string name="str_statistic_day">일간</string>
+    <string name="str_statistic_month_avr">월간 평균</string>
+    <string name="str_statistic_minimum">최저치</string>
+    <string name="str_statistic_maximum">최고치</string>
+    <string name="str_statistic_bpm">BPM</string>
+
+    // Battery
+    <string name="str_battery_title">배터리</string>
+
+
+</resources>
