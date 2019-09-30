@@ -4,9 +4,11 @@ import java.util.HashMap
 
 object SampleGattAttributes {
     var attributes: HashMap<String, String> = HashMap()
-    var HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb"
-    var CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb"
-    var HEART_RATE_AND_BATTERY_MEASUREMENT = "0000ffe0-0000-1000-8000-00805f9b34fb"
+    var HEART_RATE_MEASUREMENT =                    "00002a37-0000-1000-8000-00805f9b34fb"
+    var CLIENT_CHARACTERISTIC_CONFIG =              "00002902-0000-1000-8000-00805f9b34fb"
+    var HEART_RATE_AND_BATTERY_MEASUREMENT =        "0000ffe0-0000-1000-8000-00805f9b34fb"
+    var UV_MEASUREMENT =                            "00001801-0000-1000-8000-00805f9b34fb"
+
 
     init {
         // Sample Services.

@@ -3,16 +3,12 @@ package com.crc.masscustom.splash
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.view.animation.AnimationUtils
-import com.crc.masscustom.Main.MainActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.bluetooth.BluetoothActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
-import java.util.*
-import kotlin.concurrent.timer
 
 class SplashActivity : AppCompatActivity() {
 

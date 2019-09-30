@@ -17,9 +17,14 @@
 
     // Main
     <string name="str_main_title">Main</string>
-    <string name="str_main_list_measure">심박 측정</string>
+    <string name="str_main_list_heartbeat">심박</string>
+    <string name="str_main_list_pressure">압력</string>
+    <string name="str_main_list_rear">후방</string>
+    <string name="str_main_list_uv">UV</string>
+    <string name="str_main_list_gyro">GYRO</string>
+    <string name="str_main_list_temperature">온도</string>
     <string name="str_main_list_statistic">통계</string>
-    <string name="str_main_list_battery">배터리</string>
+    <string name="str_main_list_setting">설정</string>
 
     // Measure
     <string name="str_measure_title">심박 측정</string>
@@ -41,8 +46,46 @@
     <string name="str_statistic_maximum">최고치</string>
     <string name="str_statistic_bpm">BPM</string>
 
+    <string name="str_statistic_HeartBeat_title">심박 통계</string>
+    <string name="str_statistic_Temperature_title">온도 통계</string>
+
     // Battery
     <string name="str_battery_title">배터리</string>
 
+    // Pressure
+    <string name="str_pressure_title">압력</string>
+
+    // Rear
+    <string name="str_rear_title">후방</string>
+
+    // Uv
+    <string name="str_uv_title">UV</string>
+    <string name="str_uv_current_uv">현재 자외선 지수</string>
+    <string name="str_uv_low">낮음</string>
+    <string name="str_uv_normal">보통</string>
+    <string name="str_uv_high">높음</string>
+    <string name="str_uv_very_high">매우 높음</string>
+    <string name="str_uv_dangerous">위험</string>
+
+    // Gyro
+    <string name="str_gyro_title">GYRO</string>
+
+    // Temperature
+    <string name="str_temperature_title">온도</string>
+    <string name="str_temperature_current_temperature">현재 기온은</string>
+    <string name="str_main_default_temperature">\u00B0C</string>
+
+    // Setting
+    <string name="str_setting_title">설정</string>
+    <string name="str_setting_pressure_call">Haptic-Pressure Call</string>
+    <string name="str_setting_gyro_call">Gyro-sensing Call</string>
+    <string name="str_setting_call_112">112에 신고</string>
+    <string name="str_setting_call_119">119에 신고</string>
+    <string name="str_setting_contact">전화번호 입력</string>
+    <string name="str_setting_112">112</string>
+    <string name="str_setting_119">119</string>
+
+    // Loading
+    <string name="str_loading_text">Loading..</string>
 
 </resources>

@@ -1,19 +1,19 @@
-package com.crc.masscustom.Main
+package com.crc.masscustom.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import com.crc.masscustom.Measure.HeartBeatMeasureActivity
+import com.crc.masscustom.measure.HeartBeatMeasureActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.base.MeasuredData
 import com.crc.masscustom.battery.BatteryActivity
 import com.crc.masscustom.database.dbHeartBeatModel
 import com.crc.masscustom.statistics.StatisticActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main_grid.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 
@@ -30,12 +30,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         //commonUtils.printScreenInfo()
         tvDeviceName.text = Constants.strDeviceName
 
-        setTitle(R.string.str_main_title)
-
         val titleList = arrayListOf<String>(
-            getString(R.string.str_main_list_measure),
+            getString(R.string.str_main_list_heartbeat),
             getString(R.string.str_main_list_statistic),
-            getString(R.string.str_main_list_battery)
+            getString(R.string.str_main_list_setting)
         )
 
         val listAdapter = MainListAdapter(this, titleList)

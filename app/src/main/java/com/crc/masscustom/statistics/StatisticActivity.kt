@@ -17,12 +17,12 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
 
-        setTitle(R.string.str_statistic_title)
+        setTitle(R.string.str_statistic_HeartBeat_title)
 
-        tvDeviceName.text = Constants.strDeviceName
+//        tvDeviceName.text = Constants.strDeviceName
 
-        btDay.setOnClickListener(this)
-        btMonth.setOnClickListener(this)
+        bt_statistic_day.setOnClickListener(this)
+        bt_statistic_month.setOnClickListener(this)
 
         setCurrentButtonState()
 
@@ -32,10 +32,10 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
 
         when(v?.id) {
-            R.id.btDay -> {
+            R.id.bt_statistic_day -> {
                 changeFragment(frgStatisticDay)
             }
-            R.id.btMonth -> {
+            R.id.bt_statistic_month -> {
                 changeFragment(frgStatisticMonth)
             }
 
@@ -61,11 +61,11 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setCurrentButtonState() {
         if(Constants.STASTIC_CURRENT_STATE == "DAY") {
-            btDay.setBackgroundResource(R.drawable.img_bt_sel)
-            btMonth.setBackgroundResource(R.drawable.img_bt_nor)
+            bt_statistic_day.setBackgroundResource(R.drawable.statistics_daily_daily_button_normal)
+            bt_statistic_month.setBackgroundResource(R.drawable.statistics_daily_monthly_button_normal)
         } else {
-            btDay.setBackgroundResource(R.drawable.img_bt_nor)
-            btMonth.setBackgroundResource(R.drawable.img_bt_sel)
+            bt_statistic_day.setBackgroundResource(R.drawable.statistics_monthly_daily_button_normal)
+            bt_statistic_month.setBackgroundResource(R.drawable.statistics_monthly_monthly_button_normal)
         }
     }
 }

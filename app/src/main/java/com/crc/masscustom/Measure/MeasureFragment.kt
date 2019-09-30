@@ -1,18 +1,15 @@
-package com.crc.masscustom.Measure
+package com.crc.masscustom.measure
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import org.jetbrains.anko.support.v4.runOnUiThread
 import java.util.*
 import kotlin.concurrent.timer
 
@@ -55,19 +52,26 @@ class MeasureFragment : Fragment() {
     private fun startInitMeasure() {
         timerMeasureTask = timer(period = 1000) {
             time++
-            if(!Constants.bIsStartMeasure && !bIsFinish && time >= 20) {
-                Constants.bIsStartMeasure = true
-            }
-            if(Constants.bIsStartMeasure && !bIsFinish && time >= 50) {
+
+            if(!Constants.bIsStartMeasure && !bIsFinish && time >= 6) {
                 Constants.bIsStartMeasure = false
                 bIsFinish = true
                 timerMeasureTask?.cancel()
                 finishMeasure()
             }
-//            Log.e("eleutheria", "time : ${time}")
-            runOnUiThread {
-                tvLoading?.text = "${time * 2} ${getString(R.string.str_common_percentage)}"
-            }
+//            if(!Constants.bIsStartMeasure && !bIsFinish && time >= 20) {
+//                Constants.bIsStartMeasure = true
+//            }
+//            if(Constants.bIsStartMeasure && !bIsFinish && time >= 50) {
+//                Constants.bIsStartMeasure = false
+//                bIsFinish = true
+//                timerMeasureTask?.cancel()
+//                finishMeasure()
+//            }
+////            Log.e("eleutheria", "time : ${time}")
+//            runOnUiThread {
+//                tvLoading?.text = "${time * 2} ${getString(R.string.str_common_percentage)}"
+//            }
         }
 
     }
