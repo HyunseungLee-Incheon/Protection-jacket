@@ -10,9 +10,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-public class CommonUtils {
+class CommonUtils {
 
-    public fun printScreenInfo() {
+    fun printScreenInfo() {
         Log.d("eleutheria", Resources.getSystem().displayMetrics.density.toString())
 
         Log.d("eleutheria", Resources.getSystem().displayMetrics.densityDpi.toString())
@@ -24,7 +24,7 @@ public class CommonUtils {
 
     }
 
-    public fun storeMeasuredData(resultDate: CurrentDate, nHeartBeat: Int, nStatus: Int) : MeasuredData {
+    fun storeMeasuredData(resultDate: CurrentDate, nHeartBeat: Int, nStatus: Int) : MeasuredData {
 
         var storeData : MeasuredData = MeasuredData()
         storeData.nYear = resultDate.nYear
@@ -43,7 +43,7 @@ public class CommonUtils {
         return Constants.alMeasuredData!!
     }
 
-    public fun makeTestData(nYear: Int, nMonth: Int, nDay: Int, nHour: Int, nMinute: Int, nSecond: Int, nHearBeat: Int, nStatus: Int): MeasuredData {
+    fun makeTestData(nYear: Int, nMonth: Int, nDay: Int, nHour: Int, nMinute: Int, nSecond: Int, nHearBeat: Int, nStatus: Int): MeasuredData {
         var storeData : MeasuredData = MeasuredData()
 
         storeData.nYear = nYear
@@ -60,7 +60,7 @@ public class CommonUtils {
         return storeData
     }
 
-    public fun getCurrentDate() : List<String> {
+    fun getCurrentDate() : List<String> {
 
         val sdf = SimpleDateFormat("yyyy/MM/dd/hh/mm/ss")
         val currentDate = sdf.format(Date())
@@ -71,7 +71,7 @@ public class CommonUtils {
         return curDate
     }
 
-    public fun calcAverage(bpmDatas : RealmResults<dbHeartBeatModel>) : Int {
+    fun calcAverage(bpmDatas : RealmResults<dbHeartBeatModel>) : Int {
         var nAverage = 0
         var nTotalBPM : Long = 0
         var nTotalSize : Int = bpmDatas.size
@@ -88,7 +88,7 @@ public class CommonUtils {
         return nAverage
     }
 
-    public fun calcMonthlyAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
+    fun calcMonthlyAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
         var result : Int = 0
 
         if(datas.size < 1) {
@@ -104,7 +104,7 @@ public class CommonUtils {
         return result
     }
 
-    public fun calcMinAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
+    fun calcMinAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
         var result : Int = 0
 
         if(datas.size < 1) {
@@ -120,7 +120,7 @@ public class CommonUtils {
         return result
     }
 
-    public fun calcMaxAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
+    fun calcMaxAverage(datas : ArrayList<MonthlyStatisticData>) : Int {
         var result : Int = 0
 
         if(datas.size < 1) {
@@ -134,6 +134,24 @@ public class CommonUtils {
         }
 
         return result
+    }
+
+    fun calcRearDetect(distance : Float) : Int {
+
+        var nResult = Constants.REAR_INDEX_ZERO
+
+        if(distance < Constants.REAR_DISTANCE_ZERO) {
+            nResult = Constants.REAR_INDEX_ZERO
+        } else if(distance < Constants.REAR_DISTANCE_ONE) {
+            nResult = Constants.REAR_INDEX_ONE
+        } else if(distance < Constants.REAR_DISTANCE_TWO) {
+            nResult = Constants.REAR_INDEX_TWO
+        } else if(distance < Constants.REAR_DISTANCE_THREE) {
+            nResult = Constants.REAR_INDEX_THREE
+        } else {
+            nResult = Constants.REAR_INDEX_FOUR
+        }
+        return nResult
     }
 
 }

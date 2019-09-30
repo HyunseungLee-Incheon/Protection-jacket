@@ -1,7 +1,6 @@
-package com.crc.masscustom.Main
+package com.crc.masscustom.main
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

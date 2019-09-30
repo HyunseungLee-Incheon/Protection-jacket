@@ -1,9 +1,8 @@
-package com.crc.masscustom.Measure
+package com.crc.masscustom.measure
 
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.crc.masscustom.base.MeasuredData
 import com.crc.masscustom.database.dbHeartBeatManager
 import com.crc.masscustom.database.dbHeartBeatModel
 import io.realm.Realm
-import kotlinx.android.synthetic.main.fragment_measureresult.*
 
 class MeasureResultFragment : Fragment() {
 
@@ -86,14 +84,6 @@ class MeasureResultFragment : Fragment() {
 
             finishResult()
 
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 1, 12, 35, 128, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 2, 7, 21, 111, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 3, 53, 55, 143, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 4, 23, 34, 92, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 5, 32, 18, 100, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 6, 48, 24, 129, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 7, 17, 15, 111, 0))
-//            heartBeatManager.insert(commonUtils.makeTestData(2018, 11, 7, 10, 32, 43, 132, 0))
         }
 
         return view

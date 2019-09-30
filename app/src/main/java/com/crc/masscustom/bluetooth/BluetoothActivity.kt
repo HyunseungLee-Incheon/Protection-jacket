@@ -6,15 +6,11 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
-import android.bluetooth.le.BluetoothLeScanner
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
 import android.content.*
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
-import android.provider.SyncStateContract
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -23,7 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import com.crc.masscustom.Main.MainActivity
+import com.crc.masscustom.main.MainGridActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import kotlinx.android.synthetic.main.activity_bluetooth.*
@@ -31,7 +27,6 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.util.*
 import kotlin.concurrent.schedule
-import kotlin.concurrent.timer
 
 class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
@@ -273,6 +268,7 @@ class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             if (BluetoothLeService.ACTION_GATT_CONNECTED == action) {
+
                 mConnected = true
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED == action) {
                 mConnected = false
@@ -308,6 +304,7 @@ class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         for (gattService in gattServices) {
             val currentServiceData = HashMap<String, String>()
             uuid = gattService.uuid.toString()
+            Log.e("eleutheria", "uuid : " + uuid)
             println(uuid)
             currentServiceData.put(
                 LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString)
@@ -363,7 +360,8 @@ class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     private fun moveMainActivity() {
         Constants.strDeviceName = mDeviceName.toString()
 
-        startActivity<MainActivity>()
+//        startActivity<MainActivity>()
+        startActivity<MainGridActivity>()
     }
 
     companion object {

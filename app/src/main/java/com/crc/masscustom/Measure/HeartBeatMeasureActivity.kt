@@ -1,15 +1,16 @@
-package com.crc.masscustom.Measure
+package com.crc.masscustom.measure
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.view.View
 import com.crc.masscustom.R
-import com.crc.masscustom.base.Constants
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main_grid.*
+import kotlinx.android.synthetic.main.activity_main_grid.tv_toolbar_title
+import kotlinx.android.synthetic.main.activity_pressure.*
 
-class HeartBeatMeasureActivity : AppCompatActivity(), MeasureFragment.progressListener, MeasureResultFragment.fragmentFinishListener {
+class HeartBeatMeasureActivity : AppCompatActivity(), MeasureFragment.progressListener, MeasureResultFragment.fragmentFinishListener,
+    View.OnClickListener {
 
     val frgHeartBeat = MeasureFragment()
     val frgMeasureResult = MeasureResultFragment()
@@ -18,8 +19,8 @@ class HeartBeatMeasureActivity : AppCompatActivity(), MeasureFragment.progressLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heartbeatmeasure)
 
-        setTitle(R.string.str_measure_title)
-        tvDeviceName.text = Constants.strDeviceName
+        tv_toolbar_title.text = getString(R.string.str_measure_title)
+        bt_toolbar_back.setOnClickListener(this)
 
         changeFragment(frgHeartBeat)
 
@@ -45,4 +46,9 @@ class HeartBeatMeasureActivity : AppCompatActivity(), MeasureFragment.progressLi
     override fun onFinishResult() {
         finish()
     }
+
+    override fun onClick(v: View?) {
+
+    }
+
 }
