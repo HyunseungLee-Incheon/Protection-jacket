@@ -18,9 +18,10 @@ import com.anychart.enums.Anchor
 import com.anychart.enums.MarkerType
 import com.anychart.enums.TooltipPositionMode
 import com.crc.masscustom.R
+import com.crc.masscustom.base.AvgData
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBTemperatureModel
 import io.realm.Realm
 import io.realm.RealmResults
 import java.text.SimpleDateFormat
@@ -94,22 +95,62 @@ class StatisticTemperatureDayFragment : Fragment()  {
 
 
 //        var nDay : Int = 2
-        var heartBeatDataResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        var temperatureDataResult : RealmResults<DBTemperatureModel> = realm.where(
+            DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .findAll()
 
-        var morningAvgResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        var morningAvgResult : RealmResults<DBTemperatureModel> = realm.where(DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .lessThan("hour", 13)
             .findAll()
 
-        var afternoonAvgResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        var afternoonAvgResult : RealmResults<DBTemperatureModel> = realm.where(DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .greaterThan("hour", 12)
             .findAll()
+
+        var TemperatureDataAvgResult : Double = 0.0
+        var arTemperatureAvgResult : ArrayList<AvgData> = ArrayList<AvgData>()
+        var nMinSecond = 0
+        var nMaxSecond = 19
+
+        for(nHour in 0 until 24) {
+            for(nMinute in 0 until 60) {
+                for(nAgain in 0 until 3) {
+                    var TemperatureAvgData: AvgData = AvgData()
+
+                    if(nAgain == 0) {
+                        nMinSecond = 0
+                        nMaxSecond = 19
+                    } else if(nAgain == 0) {
+                        nMinSecond = 20
+                        nMaxSecond = 39
+                    } else {
+                        nMinSecond = 40
+                        nMaxSecond = 59
+                    }
+
+                    TemperatureDataAvgResult = realm.where(DBTemperatureModel::class.java)
+                        .equalTo("year", Constants.curYearOfDay)
+                        .equalTo("month", Constants.curMonthOfDay)
+                        .equalTo("day", Constants.curDayOfDay)
+                        .equalTo("hour", nHour)
+                        .equalTo("minute", nMinute)
+                        .greaterThanOrEqualTo("second", nMinSecond)
+                        .lessThanOrEqualTo("second", nMaxSecond)
+                        .average("temperature")
+
+                    TemperatureAvgData.strLabel = nHour.toString() + "_$nAgain"
+                    TemperatureAvgData.dValue = TemperatureDataAvgResult
+                    arTemperatureAvgResult.add(TemperatureAvgData)
+                }
+            }
+
+        }
 
         //drawGraph
 
@@ -126,16 +167,16 @@ class StatisticTemperatureDayFragment : Fragment()  {
 
         //cartesian.title()
 
-        cartesian.yAxis(0).title("BPM")
+        cartesian.yAxis(0).title("Temperature")
         cartesian.xAxis(0).labels().padding(5, 5, 5, 5)
 
         var seriesData =  ArrayList<DataEntry>()
 
-        if(heartBeatDataResult.size < 1) {
+        if(arTemperatureAvgResult.size < 1) {
             seriesData.add(ValueDataEntry("0", 0))
         } else {
-            for(bpmData in heartBeatDataResult) {
-                seriesData.add(ValueDataEntry(bpmData.hour.toString(), bpmData.heartbeat))
+            for(temperatureData in arTemperatureAvgResult) {
+                seriesData.add(ValueDataEntry(temperatureData.strLabel, temperatureData.dValue))
             }
         }
 
@@ -144,7 +185,7 @@ class StatisticTemperatureDayFragment : Fragment()  {
         var series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
 
         var series1 = cartesian.line(series1Mapping)
-        series1.name("BPM");
+        series1.name("Temperature");
         series1.hovered().markers().enabled(true)
         series1.hovered().markers()
             .type(MarkerType.CIRCLE)
@@ -167,8 +208,8 @@ class StatisticTemperatureDayFragment : Fragment()  {
 
         //drawAvgData
 
-        tvMorningBPM!!.text = commonUtils.calcAverage(morningAvgResult).toString()
-        tvAfternoonBPM!!.text = commonUtils.calcAverage(afternoonAvgResult).toString()
-        tvDayBPM!!.text = commonUtils.calcAverage(heartBeatDataResult).toString()
+        tvMorningBPM!!.text = commonUtils.calcTemperatureAverage(morningAvgResult).toString()
+        tvAfternoonBPM!!.text = commonUtils.calcTemperatureAverage(afternoonAvgResult).toString()
+        tvDayBPM!!.text = commonUtils.calcTemperatureAverage(temperatureDataResult).toString()
     }
 }

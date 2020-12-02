@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,7 @@ import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.base.MonthlyStatisticData
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBHeartBeatModel
 import io.realm.Realm
 import io.realm.RealmResults
 import java.text.SimpleDateFormat
@@ -103,7 +102,7 @@ class StatisticMonthFragment : Fragment() {
 
         for(i in 1..maxDay) {
             var monthlyBPMData = MonthlyStatisticData()
-            var monthlyResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfMonth)
+            var monthlyResult : RealmResults<DBHeartBeatModel> = realm.where(DBHeartBeatModel::class.java).equalTo("year", Constants.curYearOfMonth)
                 .equalTo( "month", Constants.curMonthOfMonth )
                 .equalTo("day", i)
                 .findAll()
@@ -128,8 +127,9 @@ class StatisticMonthFragment : Fragment() {
                 monthlyBPMData.nBPM = (monthlyBPM / monthlyResult.size).toInt()
                 monthlyBPMData.nMax = maxBPM
                 monthlyBPMData.nMin = minBPM
+
+                almonthlyBPM.add(monthlyBPMData)
             }
-            almonthlyBPM!!.add(monthlyBPMData)
         }
 
 

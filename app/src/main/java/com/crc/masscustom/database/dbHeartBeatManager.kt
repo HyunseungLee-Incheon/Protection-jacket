@@ -5,7 +5,7 @@ import com.crc.masscustom.base.MeasuredData
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-class dbHeartBeatManager {
+class DBHeartBeatManager {
 
     val realm: Realm by lazy {
         val config = RealmConfiguration.Builder()
@@ -15,22 +15,22 @@ class dbHeartBeatManager {
         Realm.getInstance(config)
     }
 
-    fun find(id: Long): dbHeartBeatModel? {
-        return realm.where(dbHeartBeatModel::class.java).equalTo("id", id).findFirst()
+    fun find(id: Long): DBHeartBeatModel? {
+        return realm.where(DBHeartBeatModel::class.java).equalTo("id", id).findFirst()
     }
 
-    fun findAll(): List<dbHeartBeatModel> {
-        return realm.where(dbHeartBeatModel::class.java).findAll()
+    fun findAll(): List<DBHeartBeatModel> {
+        return realm.where(DBHeartBeatModel::class.java).findAll()
     }
 
     fun insert(storedData: MeasuredData) {
         realm.beginTransaction()
         var newId: Long = 1
-        if(realm.where(dbHeartBeatModel::class.java).max("id") != null) {
-            newId = realm.where(dbHeartBeatModel::class.java).max("id") as Long + 1
+        if(realm.where(DBHeartBeatModel::class.java).max("id") != null) {
+            newId = realm.where(DBHeartBeatModel::class.java).max("id") as Long + 1
         }
 
-        val insertData = realm.createObject(dbHeartBeatModel::class.java, newId)
+        val insertData = realm.createObject(DBHeartBeatModel::class.java, newId)
         insertData.year = storedData.nYear
         insertData.month = storedData.nMonth
         insertData.day = storedData.nDay

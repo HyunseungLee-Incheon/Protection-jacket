@@ -1,13 +1,25 @@
 package com.crc.masscustom.rear
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
+import android.telephony.SmsManager
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_rear.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 class RearActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -26,12 +38,14 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var ivBackTwo: ImageView
     lateinit var ivBackOne: ImageView
 
+    var strReceiveData : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_rear)
 
-        tv_toolbar_title.text = getString(R.string.str_measure_title)
+        tv_toolbar_title.text = getString(R.string.str_rear_title)
         bt_toolbar_back.setOnClickListener(this)
 
         val commonUtils = CommonUtils()
@@ -51,17 +65,18 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
         ivBackTwo = findViewById<ImageView>(R.id.iv_back_two)
         ivBackOne = findViewById<ImageView>(R.id.iv_back_one)
 
-        var fLeftDistance = 5.3F
-        var fRightDistance = 11.8F
-        var fBackDistance = 2.4F
+        val fLeftDistance = 5.3F
+        val fRightDistance = 11.8F
+        val fBackDistance = 2.4F
 
-        var nLeftRear = commonUtils.calcRearDetect(fLeftDistance)
-        var nRightRear = commonUtils.calcRearDetect(fRightDistance)
-        var nBackRear = commonUtils.calcRearDetect(fBackDistance)
+        val nLeftRear = commonUtils.calcRearDetect(fLeftDistance)
+        val nRightRear = commonUtils.calcRearDetect(fRightDistance)
+        val nBackRear = commonUtils.calcRearDetect(fBackDistance)
 
         displayLeftRear(nLeftRear)
         displayRightRear(nRightRear)
         displayBackRear(nBackRear)
+
     }
 
     private fun displayLeftRear(nLeftIndex: Int) {
@@ -170,8 +185,98 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
+    private fun sendSMS() {
+        val strPhoneNumber = Constants.strGyroNumber
 
+        val smsManager = SmsManager.getDefault()
+
+//        val message = "Gyro Action Message!! "
+        val message = "비상 상황입니다! 구조가 필요합니다!"
+        val strFirstString = strPhoneNumber.substring(0, 1)
+
+        if(strFirstString.equals("0")) {
+            Log.e("eleutheria", "strPhoneNumber : $strPhoneNumber")
+            smsManager.sendTextMessage(strPhoneNumber, null, message, null, null)
+        }
     }
 
+    private fun sendCall() {
+        val strPhoneNumber = Constants.strGyroNumber
+
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$strPhoneNumber"))
+        startActivity(intent)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.bt_toolbar_back -> {
+                onBackPressed()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, IntentFilter(Constants.MESSAGE_SEND_REAR))
+    }
+
+    private val mMessageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if(intent!!.hasExtra("value")) {
+                val message = intent!!.getStringExtra("value")
+
+                val commonUtils = CommonUtils()
+
+                if(message.contains("\r\n")) {
+                    strReceiveData += message
+                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
+                    var arData = strReceiveData.split(".")
+
+                    if(arData.size > 2) {
+                        val strLeft = arData[0]
+                        val strBack = arData[1]
+                        val strRight = arData[2]
+
+                        val arDataL = strLeft.split(" ")
+                        val arDataB = strBack.split(" ")
+                        val arDataR = strRight.split(" ")
+
+                        val fLeftDistance = arDataL[1].toFloat()
+                        val fBackDistance = arDataB[1].toFloat()
+                        val fRightDistance = arDataR[1].toFloat()
+
+//                        Log.e("eleutheria", "fLeftDistance : $fLeftDistance, fBackDistance : $fBackDistance, fRightDistance : $fRightDistance")
+                        val nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 100)
+                        val nBackRear = commonUtils.calcRearDetect(fBackDistance / 100)
+                        val nRightRear = commonUtils.calcRearDetect(fRightDistance / 100)
+
+                        displayLeftRear(nLeftRear)
+                        displayRightRear(nRightRear)
+                        displayBackRear(nBackRear)
+
+                        if((fLeftDistance <= 0.3F) || (fRightDistance <= 0.3F) || (fBackDistance <= 0.3F)) {
+                            sendCall()
+                            sendSMS()
+                        }
+                    }
+
+                    if(arData.size > 8) {
+                        var fLeftDistance = arData[3].toFloat()
+                        var fBackDistance = arData[5].toFloat()
+                        var fRightDistance = arData[7].toFloat()
+
+
+                    }
+                    strReceiveData = ""
+                } else {
+                    strReceiveData += message
+                }
+            }
+        }
+    }
 }

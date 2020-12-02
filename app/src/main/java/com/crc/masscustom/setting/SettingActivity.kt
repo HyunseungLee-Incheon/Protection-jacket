@@ -1,17 +1,21 @@
 package com.crc.masscustom.setting
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import com.crc.masscustom.R
+import com.crc.masscustom.base.Constants
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
+    private var settings: SharedPreferences? = null
     lateinit var tvPressureNumber: TextView
     lateinit var tvGyroNumber: TextView
 
@@ -23,8 +27,13 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         tv_toolbar_title.text = getString(R.string.str_setting_title)
         bt_toolbar_back.setOnClickListener(this)
 
+        settings = getSharedPreferences(Constants.SHARED_PREF_SEUPDATA, Context.MODE_PRIVATE)
+
         tvPressureNumber = findViewById(R.id.tv_pressure_number)
         tvGyroNumber = findViewById(R.id.tv_gyro_number)
+
+        tvPressureNumber.text = Constants.strHapticNumber
+        tvGyroNumber.text = Constants.strGyroNumber
 
         bt_pressure_112.setOnClickListener(this)
         bt_pressure_contact.setOnClickListener(this)
@@ -35,7 +44,12 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.bt_pressure_112 -> {
-                tvPressureNumber.text = getString(R.string.str_setting_112)
+                Constants.strHapticNumber = getString(R.string.str_setting_112)
+                tvPressureNumber.text = Constants.strHapticNumber
+
+                val editor = settings!!.edit()
+                editor.putString(Constants.PREF_HAPTIC_CALL_NUMBER, Constants.strHapticNumber)
+                editor.apply()
             }
             R.id.bt_pressure_contact -> {
                 val contactIntent = Intent(Intent.ACTION_PICK)
@@ -43,12 +57,20 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
                 startActivityForResult(contactIntent, 0)
             }
             R.id.bt_gyro_119 -> {
-                tvGyroNumber.text = getString(R.string.str_setting_119)
+                Constants.strGyroNumber = getString(R.string.str_setting_119)
+                tvGyroNumber.text = Constants.strGyroNumber
+
+                val editor = settings!!.edit()
+                editor.putString(Constants.PREF_GYRO_CALL_NUMBER, Constants.strGyroNumber)
+                editor.apply()
             }
             R.id.bt_gyro_contact -> {
                 val contactIntent = Intent(Intent.ACTION_PICK)
                 contactIntent.data = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
                 startActivityForResult(contactIntent, 1)
+            }
+            R.id.bt_toolbar_back -> {
+                onBackPressed()
             }
         }
     }
@@ -69,9 +91,20 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
             val number = cursor.getString(1)
 
             if(requestCode == 0) {
-                tvPressureNumber.text = number
+                Constants.strHapticNumber = number
+                tvPressureNumber.text = Constants.strHapticNumber
+
+                val editor = settings!!.edit()
+                editor.putString(Constants.PREF_HAPTIC_CALL_NUMBER, Constants.strHapticNumber)
+                editor.apply()
+
             } else if(requestCode == 1) {
-                tvGyroNumber.text = number
+                Constants.strGyroNumber = number
+                tvGyroNumber.text = Constants.strGyroNumber
+
+                val editor = settings!!.edit()
+                editor.putString(Constants.PREF_GYRO_CALL_NUMBER, Constants.strGyroNumber)
+                editor.apply()
             }
         }
     }

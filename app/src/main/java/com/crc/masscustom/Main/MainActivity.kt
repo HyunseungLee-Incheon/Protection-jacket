@@ -9,7 +9,7 @@ import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.battery.BatteryActivity
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.statistics.StatisticActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
@@ -65,11 +65,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         var newId: Long = 1
         for(j in 1..30) {
             for (i in 8..20) {
-                if (realm.where(dbHeartBeatModel::class.java).max("id") != null) {
-                    newId = realm.where(dbHeartBeatModel::class.java).max("id") as Long + 1
+                if (realm.where(DBHeartBeatModel::class.java).max("id") != null) {
+                    newId = realm.where(DBHeartBeatModel::class.java).max("id") as Long + 1
                 }
 
-                val insertData = realm.createObject(dbHeartBeatModel::class.java, newId)
+                val insertData = realm.createObject(DBHeartBeatModel::class.java, newId)
                 insertData.year = 2018
                 insertData.month = 11
                 insertData.day = j

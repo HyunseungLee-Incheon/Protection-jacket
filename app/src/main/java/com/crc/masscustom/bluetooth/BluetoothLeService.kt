@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.crc.masscustom.base.Constants
 import java.util.*
@@ -35,6 +36,7 @@ class BluetoothLeService: Service() {
                 intentAction = ACTION_GATT_DISCONNECTED
                 mConnectionState = STATE_DISCONNECTED
                 Log.i(TAG, "Disconnected from GATT server.")
+                disconnectGattServer()
                 broadcastUpdate(intentAction)
             }
         }
@@ -45,7 +47,7 @@ class BluetoothLeService: Service() {
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status)
             }
-            setHearBeatNotification(true)
+            setMCNotification(true)
         }
 
         override fun onCharacteristicRead(gatt: BluetoothGatt,
@@ -63,6 +65,18 @@ class BluetoothLeService: Service() {
         }
     }
 
+    fun disconnectGattServer() {
+        Log.d("eleutheria", "Closing Gatt connection")
+        // reset the connection flag
+        mConnectionState = STATE_DISCONNECTED
+
+        // disconnect and close the gatt
+        if (mBluetoothGatt != null) {
+            mBluetoothGatt!!.disconnect()
+            mBluetoothGatt!!.close()
+        }
+    }
+
     private fun broadcastUpdate(action: String) {
         val intent = Intent(action)
         sendBroadcast(intent)
@@ -76,7 +90,7 @@ class BluetoothLeService: Service() {
         // This is special handling for the Heart Rate Measurement profile.  Data parsing is
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-        if (UUID_HEART_RATE_MEASUREMENT == characteristic.uuid) {
+        if (UUID_BEETLE_MEASUREMENT == characteristic.uuid) {
             val flag = characteristic.properties
             var format = -1
             if (flag and 0x01 != 0) {
@@ -86,10 +100,41 @@ class BluetoothLeService: Service() {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8
                 Log.d(TAG, "Heart rate format UINT8.")
             }
-            val heartRate = characteristic.getIntValue(format, 1)!!
-            Log.d(TAG, String.format("Received heart rate: %d", heartRate))
-            intent.putExtra(EXTRA_DATA, heartRate.toString())
-        } else {
+//            val heartRate = characteristic.getIntValue(format, 1)!!
+            when(Constants.nCurFunctionIndex) {
+                Constants.MAIN_FUNCTION_INDEX_UV -> {
+
+                    Log.d("eleutheria", String.format("Received UV string : ${characteristic.getStringValue(1)}"))
+
+                    var strReceivedValue = characteristic.getStringValue(1)
+                    val arReceivedValue = strReceivedValue.split(".")
+                    if(arReceivedValue[4].contains("U")) {
+                        val strDivideValue = arReceivedValue[4].substring(1)
+                        val nUVSignal = strDivideValue.toInt()
+                        Log.d("eleutheria", String.format("nUVSignal : $nUVSignal"))
+                        intent.putExtra(EXTRA_DATA, nUVSignal.toString())
+
+                        sendMessageToActivity(nUVSignal.toString())
+                    }
+//                    val nUVSignal = Character.getNumericValue(characteristic.getIntValue(format, 1))
+//                    Log.d("eleutheria", String.format("Received UV : %d", nUVSignal))
+//                    intent.putExtra(EXTRA_DATA, nUVSignal.toString())
+//
+//                    sendMessageToActivity(nUVSignal.toString())
+
+                }
+                Constants.MAIN_FUNCTION_INDEX_GYRO -> {
+                    val nGyroSignal = Character.getNumericValue(characteristic.getIntValue(format, 1))
+                    Log.d("eleutheria", String.format("Received Gyro : %d", nGyroSignal))
+                    intent.putExtra(EXTRA_DATA, nGyroSignal.toString())
+
+                    if(nGyroSignal == Constants.ACTION_GYRO_SIGNAL) {
+                        sendMessageToActivity(nGyroSignal.toString())
+                    }
+                }
+            }
+        }
+        else {
             // For all other profiles, writes the data formatted in HEX.
             val data = characteristic.value
             if (data != null && data.size > 0) {
@@ -257,29 +302,63 @@ class BluetoothLeService: Service() {
         }
         mBluetoothGatt!!.setCharacteristicNotification(characteristic, enabled)
 
-        // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT == characteristic.uuid) {
-            val descriptor = characteristic.getDescriptor(
-                UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG))
-            descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-            mBluetoothGatt!!.writeDescriptor(descriptor)
-        }
+//        // This is specific to Heart Rate Measurement.
+//        if (UUID_HEART_RATE_MEASUREMENT == characteristic.uuid) {
+//            val descriptor = characteristic.getDescriptor(
+//                UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG))
+//            descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+//            mBluetoothGatt!!.writeDescriptor(descriptor)
+//        }
     }
 
-    fun setHearBeatNotification(enabled: Boolean) {
-        val uuidHBCharateristic = SampleGattAttributes.HEART_RATE_AND_BATTERY_MEASUREMENT
+    fun setMCNotification(enabled: Boolean) {
+
+        var uuidMCCharateristic = SampleGattAttributes.HEART_BEAT_MEASUREMENT
+        var uuidMCService = SampleGattAttributes.SERVICE_HEART_BEAT_MEASUREMENT
+
+        when(Constants.nCurFunctionIndex) {
+            Constants.MAIN_FUNCTION_INDEX_HB -> {
+                uuidMCCharateristic = SampleGattAttributes.HEART_BEAT_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_HEART_BEAT_MEASUREMENT
+            }
+            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+                uuidMCCharateristic = SampleGattAttributes.PRESSURE_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_PRESSURE_MEASUREMENT
+
+            }
+            Constants.MAIN_FUNCTION_INDEX_REAR -> {
+                uuidMCCharateristic = SampleGattAttributes.REAR_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_REAR_MEASUREMENT
+
+            }
+            Constants.MAIN_FUNCTION_INDEX_UV -> {
+                uuidMCCharateristic = SampleGattAttributes.BEETLE_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_BEETLE_MEASUREMENT
+
+            }
+            Constants.MAIN_FUNCTION_INDEX_GYRO -> {
+                uuidMCCharateristic = SampleGattAttributes.BEETLE_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_BEETLE_MEASUREMENT
+
+            }
+            Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
+                uuidMCCharateristic = SampleGattAttributes.TEMPERATURE_MEASUREMENT
+                uuidMCService = SampleGattAttributes.SERVICE_TEMPERATURE_MEASUREMENT
+
+            }
+        }
 
         var mBluetoothLeService: BluetoothGattService? = null
         var mBluetoothGattCharacteristic: BluetoothGattCharacteristic? = null
 
         for(service: BluetoothGattService in mBluetoothGatt!!.getServices()) {
             if((service==null)||(service.uuid==null)) continue
-            if(SampleGattAttributes.HEART_RATE_AND_BATTERY_MEASUREMENT.equals(service.uuid.toString(), true)) {
+            if(uuidMCService.equals(service.uuid.toString(), true)) {
                 mBluetoothLeService = service
             }
         }
         if(mBluetoothLeService != null) {
-            mBluetoothGattCharacteristic = mBluetoothLeService.getCharacteristic(UUID.fromString(uuidHBCharateristic))
+            mBluetoothGattCharacteristic = mBluetoothLeService.getCharacteristic(UUID.fromString(uuidMCCharateristic))
         } else {
             Log.e("eleuthria", "mBluetoothLeService is null")
         }
@@ -287,6 +366,36 @@ class BluetoothLeService: Service() {
         if(mBluetoothGattCharacteristic != null) {
             setCharacteristicNotification(mBluetoothGattCharacteristic, enabled)
         }
+    }
+
+    private fun sendMessageToActivity(msg: String) {
+        var strActionName = "NoAction"
+
+        when(Constants.nCurFunctionIndex) {
+            Constants.MAIN_FUNCTION_INDEX_HB -> {
+                strActionName = Constants.MESSAGE_SEND_HB
+            }
+            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+                strActionName = Constants.MESSAGE_SEND_PRESSURE
+            }
+            Constants.MAIN_FUNCTION_INDEX_REAR -> {
+                strActionName = Constants.MESSAGE_SEND_REAR
+            }
+            Constants.MAIN_FUNCTION_INDEX_UV -> {
+                strActionName = Constants.MESSAGE_SEND_UV
+            }
+            Constants.MAIN_FUNCTION_INDEX_GYRO -> {
+                strActionName = Constants.MESSAGE_SEND_GYRO
+            }
+            Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
+                strActionName = Constants.MESSAGE_SEND_TEMPERATURE
+            }
+        }
+
+        val intent = Intent(strActionName)
+        // You can also include some extra data.
+        intent.putExtra("value", msg)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     /**
@@ -315,6 +424,6 @@ class BluetoothLeService: Service() {
         val ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE"
         val EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA"
 
-        val UUID_HEART_RATE_MEASUREMENT = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT)
+        val UUID_BEETLE_MEASUREMENT = UUID.fromString(SampleGattAttributes.BEETLE_MEASUREMENT)
     }
 }

@@ -1,8 +1,8 @@
 package com.crc.masscustom.database
 
-class dbModule {
+class DBModule {
 
-    fun provideHeartBeatManager(): dbHeartBeatManager {
-        return dbHeartBeatManager()
+    fun provideHeartBeatManager(): DBHeartBeatManager {
+        return DBHeartBeatManager()
     }
 }

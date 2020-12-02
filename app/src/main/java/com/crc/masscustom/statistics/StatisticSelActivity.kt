@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.crc.masscustom.R
+import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_statistic_sel.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 
 class StatisticSelActivity : AppCompatActivity(), View.OnClickListener {
@@ -29,7 +33,15 @@ class StatisticSelActivity : AppCompatActivity(), View.OnClickListener {
             R.id.bt_statistic_temp -> {
                 startActivity<StatisticTemperatureActivity>()
             }
+            R.id.bt_toolbar_back -> {
+                onBackPressed()
+            }
         }
     }
+
+    override fun onBackPressed() {
+        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+    }
+
 
 }

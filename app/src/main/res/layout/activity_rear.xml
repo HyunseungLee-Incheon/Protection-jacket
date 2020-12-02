@@ -85,106 +85,218 @@
             app:srcCompat="@drawable/reardetection_explain_image" />
 
     <ImageView
-            android:id="@+id/iv_left_four"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="87dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
+        android:id="@+id/iv_left_four"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
 
     <ImageView
-            android:id="@+id/iv_left_three"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_left_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_four"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
+        android:id="@+id/iv_left_three"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_left_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_four"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
 
     <ImageView
-            android:id="@+id/iv_left_one"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_left_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_two"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
+        android:id="@+id/iv_left_one"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_left_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_two"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
 
     <ImageView
-            android:id="@+id/iv_left_two"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_left_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_three"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
+        android:id="@+id/iv_left_two"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_left_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_three"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
 
     <ImageView
-            android:id="@+id/iv_right_four"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintStart_toEndOf="@+id/iv_left_four"
-            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
+        android:id="@+id/iv_right_four"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_left_four"
+        app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
 
     <ImageView
-            android:id="@+id/iv_right_three"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="1dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_right_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_four"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
+        android:id="@+id/iv_right_three"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_right_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_four"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
 
     <ImageView
-            android:id="@+id/iv_right_two"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_right_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_three"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
+        android:id="@+id/iv_right_two"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_right_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_three"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
 
     <ImageView
-            android:id="@+id/iv_right_one"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_right_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_left_two"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
+        android:id="@+id/iv_right_one"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_right_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_left_two"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
 
     <ImageView
-            android:id="@+id/iv_back_four"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="42dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintStart_toEndOf="@+id/iv_right_four"
-            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
+        android:id="@+id/iv_back_four"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_right_four"
+        app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image4" />
 
     <ImageView
-            android:id="@+id/iv_back_three"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_back_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_back_four"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
+        android:id="@+id/iv_back_three"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_back_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back_four"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image3" />
 
     <ImageView
-            android:id="@+id/iv_back_two"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_back_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_back_three"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
+        android:id="@+id/iv_back_two"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_back_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back_three"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image2" />
 
     <ImageView
-            android:id="@+id/iv_back_one"
-            android:layout_width="59dp"
-            android:layout_height="33dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_back_four"
-            app:layout_constraintTop_toBottomOf="@+id/iv_back_two"
-            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
+        android:id="@+id/iv_back_one"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="@+id/iv_back_four"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back_two"
+        app:srcCompat="@drawable/reardetection_gauge_bar_image1" />
+
+    <!-- galaxy s9 -->
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_left_four"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            android:layout_marginStart="87dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_left_three"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_left_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_four"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_left_one"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_left_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_two"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_left_two"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_left_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_three"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_right_four"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/iv_left_four"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_right_three"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            android:layout_marginTop="1dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_right_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_four"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_right_two"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_right_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_three"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_right_one"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_right_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_left_two"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_back_four"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            android:layout_marginStart="42dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/iv_right_four"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_graph_bg"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image4" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_back_three"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_back_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_back_four"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image3" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_back_two"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_back_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_back_three"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image2" />-->
+
+<!--    <ImageView-->
+<!--            android:id="@+id/iv_back_one"-->
+<!--            android:layout_width="59dp"-->
+<!--            android:layout_height="33dp"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/iv_back_four"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_back_two"-->
+<!--            app:srcCompat="@drawable/reardetection_gauge_bar_image1" />-->
 
 </android.support.constraint.ConstraintLayout>

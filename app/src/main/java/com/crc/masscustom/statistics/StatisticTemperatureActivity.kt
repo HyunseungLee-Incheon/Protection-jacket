@@ -7,6 +7,9 @@ import android.view.View
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import kotlinx.android.synthetic.main.activity_statistic.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 class StatisticTemperatureActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -36,8 +39,14 @@ class StatisticTemperatureActivity : AppCompatActivity(), View.OnClickListener {
             R.id.bt_statistic_month -> {
                 changeFragment(frgStatisticMonth)
             }
-
+            R.id.bt_toolbar_back -> {
+                onBackPressed()
+            }
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(intentFor<StatisticSelActivity>().clearTask().newTask())
     }
 
     private fun changeFragment(frag : Fragment) {
