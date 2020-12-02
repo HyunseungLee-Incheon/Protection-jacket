@@ -21,7 +21,7 @@ import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.base.MonthlyStatisticData
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBTemperatureModel
 import io.realm.Realm
 import io.realm.RealmResults
 import java.text.SimpleDateFormat
@@ -94,41 +94,42 @@ class StatisticTemperatureMonthFragment : Fragment()  {
         var commonUtils = CommonUtils()
         var calendar = Calendar.getInstance()
         var maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        var monthlyBPM : Long = 0
-        var maxBPM : Int = 0
-        var minBPM : Int = 0
+        var monthlyTemperature : Long = 0
+        var maxTemperature : Int = 0
+        var minTemperature : Int = 0
         //var monthlyBPMData = MonthlyStatisticData()
-        var almonthlyBPM = ArrayList<MonthlyStatisticData>()
+        var almonthlyTemperature = ArrayList<MonthlyStatisticData>()
 
         for(i in 1..maxDay) {
-            var monthlyBPMData = MonthlyStatisticData()
-            var monthlyResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfMonth)
+            var monthlyTemperatureData = MonthlyStatisticData()
+            var monthlyResult : RealmResults<DBTemperatureModel> = realm.where(DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfMonth)
                 .equalTo( "month", Constants.curMonthOfMonth )
                 .equalTo("day", i)
                 .findAll()
 
-            monthlyBPM = 0
-            maxBPM = 0
-            minBPM = 300
+            monthlyTemperature = 0
+            maxTemperature = 0
+            minTemperature = 300
             for(result in monthlyResult) {
-                if(maxBPM < result.heartbeat) {
-                    maxBPM = result.heartbeat
+                if(maxTemperature < result.temperature) {
+                    maxTemperature = result.temperature
                 }
-                if(minBPM > result.heartbeat) {
-                    minBPM = result.heartbeat
+                if(minTemperature > result.temperature) {
+                    minTemperature = result.temperature
                 }
-                monthlyBPM += result.heartbeat
+                monthlyTemperature += result.temperature
 
 
             }
 
-            if(monthlyBPM > 0) {
-                monthlyBPMData.nDay = i
-                monthlyBPMData.nBPM = (monthlyBPM / monthlyResult.size).toInt()
-                monthlyBPMData.nMax = maxBPM
-                monthlyBPMData.nMin = minBPM
+            if(monthlyTemperature > 0) {
+                monthlyTemperatureData.nDay = i
+                monthlyTemperatureData.nBPM = (monthlyTemperature / monthlyResult.size).toInt()
+                monthlyTemperatureData.nMax = maxTemperature
+                monthlyTemperatureData.nMin = minTemperature
+
+                almonthlyTemperature.add(monthlyTemperatureData)
             }
-            almonthlyBPM!!.add(monthlyBPMData)
         }
 
 
@@ -144,16 +145,16 @@ class StatisticTemperatureMonthFragment : Fragment()  {
 
         //cartesian.title()
 
-        cartesian.yAxis(0).title("BPM")
+        cartesian.yAxis(0).title("Temperature")
         cartesian.xAxis(0).labels().padding(5, 5, 5, 5)
 
         var seriesData =  ArrayList<DataEntry>()
 
-        if(almonthlyBPM!!.size < 1) {
+        if(almonthlyTemperature!!.size < 1) {
             seriesData.add(CustomDataEntry("0", 0, 0, 0))
         } else {
-            for(bpmData in almonthlyBPM) {
-                seriesData.add(CustomDataEntry(bpmData.nDay.toString(), bpmData.nBPM, bpmData.nMin, bpmData.nMax))
+            for(temperatureData in almonthlyTemperature) {
+                seriesData.add(CustomDataEntry(temperatureData.nDay.toString(), temperatureData.nBPM, temperatureData.nMin, temperatureData.nMax))
             }
         }
 
@@ -164,7 +165,7 @@ class StatisticTemperatureMonthFragment : Fragment()  {
         var series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
         var series1 = cartesian.line(series1Mapping)
-        series1.name(getString(R.string.str_statistic_bpm));
+        series1.name(getString(R.string.str_statistic_temperature));
         series1.hovered().markers().enabled(true)
         series1.hovered().markers()
             .type(MarkerType.CIRCLE)
@@ -210,9 +211,9 @@ class StatisticTemperatureMonthFragment : Fragment()  {
 
 
         //drawAvgData
-        tvMonthlyBPM!!.text = commonUtils.calcMonthlyAverage(almonthlyBPM).toString()
-        tvMinimumBPM!!.text = commonUtils.calcMinAverage(almonthlyBPM).toString()
-        tvMaximumBPM!!.text = commonUtils.calcMaxAverage(almonthlyBPM).toString()
+        tvMonthlyBPM!!.text = commonUtils.calcMonthlyAverage(almonthlyTemperature).toString()
+        tvMinimumBPM!!.text = commonUtils.calcMinAverage(almonthlyTemperature).toString()
+        tvMaximumBPM!!.text = commonUtils.calcMaxAverage(almonthlyTemperature).toString()
     }
 
     private inner class CustomDataEntry internal constructor(x: String, value: Number, value2: Number, value3: Number) : ValueDataEntry(x, value) {

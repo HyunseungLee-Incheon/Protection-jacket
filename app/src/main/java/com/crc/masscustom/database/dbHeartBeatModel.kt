@@ -3,10 +3,12 @@ package com.crc.masscustom.database
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class dbHeartBeatModel : RealmObject() {
+
+open class DBHeartBeatModel : RealmObject() {
 
 
-    @PrimaryKey var id : Long = 0
+    @PrimaryKey
+    var id : Long = 0
     var year : Int = 2018
     var month : Int = 1
     var day : Int = 1

@@ -18,12 +18,11 @@ import com.anychart.data.Set
 import com.anychart.enums.Anchor
 import com.anychart.enums.MarkerType
 import com.anychart.enums.TooltipPositionMode
-import com.anychart.graphics.vector.Stroke
 import com.crc.masscustom.R
+import com.crc.masscustom.base.AvgData
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.base.MeasuredData
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBHeartBeatModel
 import io.realm.Realm
 import io.realm.RealmResults
 import java.text.SimpleDateFormat
@@ -94,7 +93,7 @@ class StasticDayFragment : Fragment() {
 //
 //
 //        val nId: Int = 1
-//        var restoreData: dbHeartBeatModel? = realm.where(dbHeartBeatModel::class.java).equalTo("id", nId).findFirst()
+//        var restoreData: DBHeartBeatModel? = realm.where(DBHeartBeatModel::class.java).equalTo("id", nId).findFirst()
 //        Log.e("eleutheria", "restoreData : ${restoreData?.year}/${restoreData?.month}/${restoreData?.day} ${restoreData?.hour}:${restoreData?.minute}:${restoreData?.second}, bpm : ${restoreData?.heartbeat}, Status : ${restoreData?.status}")
 
         return view
@@ -103,30 +102,50 @@ class StasticDayFragment : Fragment() {
     private fun drawDayData() {
         // get realm data
 
-        var commonUtils = CommonUtils()
+        val commonUtils = CommonUtils()
 
 
 //        var nDay : Int = 2
-        var heartBeatDataResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        val heartBeatDataResult : RealmResults<DBHeartBeatModel> = realm.where(DBHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .findAll()
 
-        var morningAvgResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        val morningAvgResult : RealmResults<DBHeartBeatModel> = realm.where(DBHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .lessThan("hour", 13)
             .findAll()
 
-        var afternoonAvgResult : RealmResults<dbHeartBeatModel> = realm.where(dbHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+        val afternoonAvgResult : RealmResults<DBHeartBeatModel> = realm.where(DBHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .greaterThan("hour", 12)
             .findAll()
 
+//        var heartBeatDataAvgResult : DBHeartBeatModel = DBHeartBeatModel()
+        var heartBeatDataAvgResult : Double = 0.0
+        var arHBAvgResult : ArrayList<AvgData> = ArrayList<AvgData>()
+
+        for(i in 0 until 24) {
+            var HBAvgData: AvgData = AvgData()
+
+            heartBeatDataAvgResult = realm.where(DBHeartBeatModel::class.java).equalTo("year", Constants.curYearOfDay)
+                .equalTo( "month", Constants.curMonthOfDay )
+                .equalTo("day", Constants.curDayOfDay)
+                .equalTo("hour", i)
+                .average("heartbeat")
+
+            HBAvgData.strLabel = i.toString()
+            HBAvgData.dValue = heartBeatDataAvgResult
+            arHBAvgResult.add(HBAvgData)
+
+        }
+
+
         //drawGraph
 
-        var cartesian: Cartesian = AnyChart.line()
+        val cartesian: Cartesian = AnyChart.line()
 
         cartesian.animation(true)
         cartesian.padding(10, 20, 5, 20)
@@ -144,11 +163,12 @@ class StasticDayFragment : Fragment() {
 
         var seriesData =  ArrayList<DataEntry>()
 
-        if(heartBeatDataResult.size < 1) {
+        if(arHBAvgResult.size < 1) {
             seriesData.add(ValueDataEntry("0", 0))
         } else {
-            for(bpmData in heartBeatDataResult) {
-                seriesData.add(ValueDataEntry(bpmData.hour.toString(), bpmData.heartbeat))
+            for(bpmData in arHBAvgResult!!) {
+                Log.e("eleutheria", "bpmData - Label : ${bpmData.strLabel}, value : ${bpmData.dValue}")
+                seriesData.add(ValueDataEntry(bpmData.strLabel, bpmData.dValue))
             }
         }
 

@@ -13,14 +13,14 @@ import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.base.CurrentDate
 import com.crc.masscustom.base.MeasuredData
-import com.crc.masscustom.database.dbHeartBeatManager
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBHeartBeatManager
+import com.crc.masscustom.database.DBHeartBeatModel
 import io.realm.Realm
 
 class MeasureResultFragment : Fragment() {
 
 
-    lateinit var heartBeatManager: dbHeartBeatManager
+    lateinit var heartBeatManager: DBHeartBeatManager
 
     val realm: Realm = Realm.getDefaultInstance()
 
@@ -66,11 +66,11 @@ class MeasureResultFragment : Fragment() {
             realm.beginTransaction()
 
             var newId: Long = 1
-            if(realm.where(dbHeartBeatModel::class.java).max("id") != null) {
-                newId = realm.where(dbHeartBeatModel::class.java).max("id") as Long + 1
+            if(realm.where(DBHeartBeatModel::class.java).max("id") != null) {
+                newId = realm.where(DBHeartBeatModel::class.java).max("id") as Long + 1
             }
             val storedData: MeasuredData = commonUtils.storeMeasuredData(mResultDate, avgHeartBeat, Constants.USER_STATUS_NORMAL)
-            val insertData = realm.createObject(dbHeartBeatModel::class.java, newId)
+            val insertData = realm.createObject(DBHeartBeatModel::class.java, newId)
             insertData.year = storedData.nYear
             insertData.month = storedData.nMonth
             insertData.day = storedData.nDay

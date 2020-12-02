@@ -2,10 +2,9 @@ package com.crc.masscustom.base
 
 import android.content.res.Resources
 import android.util.Log
-import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.crc.masscustom.database.dbHeartBeatModel
+import com.crc.masscustom.database.DBHeartBeatModel
+import com.crc.masscustom.database.DBTemperatureModel
 import io.realm.RealmResults
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,6 +42,24 @@ class CommonUtils {
         return Constants.alMeasuredData!!
     }
 
+    fun storeTemperatureData(resultDate: CurrentDate, nTemperature: Int) : TemperatureData {
+
+        var storeData : TemperatureData = TemperatureData()
+        storeData.nYear = resultDate.nYear
+        storeData.nMonth = resultDate.nMonth
+        storeData.nDay = resultDate.nDay
+
+        storeData.nHour = resultDate.nHour
+        storeData.nMinute = resultDate.nMinute
+        storeData.nSecond = resultDate.nSecond
+
+        storeData.nTemperature = nTemperature
+
+        Constants.alTemperatureData = storeData
+
+        return Constants.alTemperatureData!!
+    }
+
     fun makeTestData(nYear: Int, nMonth: Int, nDay: Int, nHour: Int, nMinute: Int, nSecond: Int, nHearBeat: Int, nStatus: Int): MeasuredData {
         var storeData : MeasuredData = MeasuredData()
 
@@ -62,7 +79,7 @@ class CommonUtils {
 
     fun getCurrentDate() : List<String> {
 
-        val sdf = SimpleDateFormat("yyyy/MM/dd/hh/mm/ss")
+        val sdf = SimpleDateFormat("yyyy/MM/dd/HH/mm/ss")
         val currentDate = sdf.format(Date())
 
         var curDate = currentDate.split("/")
@@ -71,7 +88,7 @@ class CommonUtils {
         return curDate
     }
 
-    fun calcAverage(bpmDatas : RealmResults<dbHeartBeatModel>) : Int {
+    fun calcAverage(bpmDatas : RealmResults<DBHeartBeatModel>) : Int {
         var nAverage = 0
         var nTotalBPM : Long = 0
         var nTotalSize : Int = bpmDatas.size
@@ -134,6 +151,23 @@ class CommonUtils {
         }
 
         return result
+    }
+
+    fun calcTemperatureAverage(temperatureDatas : RealmResults<DBTemperatureModel>) : Int {
+        var nAverage = 0
+        var nTotalTemperature : Long = 0
+        var nTotalSize : Int = temperatureDatas.size
+
+        if(temperatureDatas.size < 1) {
+            nAverage = 0
+        } else {
+            for(temperatureData in temperatureDatas) {
+                nTotalTemperature += temperatureData.temperature
+            }
+            nAverage = (nTotalTemperature / nTotalSize).toInt()
+        }
+
+        return nAverage
     }
 
     fun calcRearDetect(distance : Float) : Int {
