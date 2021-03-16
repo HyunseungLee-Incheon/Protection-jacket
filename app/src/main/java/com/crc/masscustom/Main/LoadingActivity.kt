@@ -23,13 +23,17 @@ import com.crc.masscustom.base.Constants
 import com.crc.masscustom.bluetooth.BluetoothActivity
 import com.crc.masscustom.bluetooth.BluetoothLeService
 import com.crc.masscustom.bluetooth.SampleGattAttributes
+import com.crc.masscustom.finedust.FineDustActivity
+import com.crc.masscustom.gas.GasActivity
 import com.crc.masscustom.gyro.GyroActivity
 import com.crc.masscustom.measure.HeartBeatMeasureActivity
+import com.crc.masscustom.measure.HeartBeatResultActivity
 import com.crc.masscustom.pressure.PressureActivity
 import com.crc.masscustom.rear.RearActivity
+import com.crc.masscustom.setting.SettingActivity
 import com.crc.masscustom.temperature.TemperatureActivity
 import com.crc.masscustom.uv.UvActivity
-import io.realm.log.RealmLog
+import io.realm.log.RealmLog.debug
 import kotlinx.android.synthetic.main.activity_loading.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -71,7 +75,8 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
 
         mHandler = Handler()
 
-        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (PermissionChecker.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
 
@@ -193,38 +198,62 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
 
             when(nFunctionIndex) {
                 Constants.MAIN_FUNCTION_INDEX_HB -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_HB)) {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_HB) {
                         Log.e("eleutheria", "find device HeartBeat")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
-                Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_PRESSURE)) {
-                        Log.e("eleutheria", "find device Pressure")
+                Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
+                        Log.e("eleutheria", "find device FineDust")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
-                Constants.MAIN_FUNCTION_INDEX_REAR -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_REAR)) {
-                        Log.e("eleutheria", "find device Rear")
+                Constants.MAIN_FUNCTION_INDEX_GAS -> {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
+                        Log.e("eleutheria", "find device Gas")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
+//                Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+//                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_PRESSURE)) {
+//                        Log.e("eleutheria", "find device Pressure")
+//                        mBluetoothLeService!!.connect(strDeviceAddress)
+//                    }
+//                }
+//                Constants.MAIN_FUNCTION_INDEX_REAR -> {
+//                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_REAR)) {
+//                        Log.e("eleutheria", "find device Rear")
+//                        mBluetoothLeService!!.connect(strDeviceAddress)
+//                    }
+//                }
                 Constants.MAIN_FUNCTION_INDEX_UV -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_UV)) {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
                         Log.e("eleutheria", "find device UV")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
                 Constants.MAIN_FUNCTION_INDEX_GYRO -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_GYRO)) {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GYRO) {
                         Log.e("eleutheria", "find device GYRO")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
                 Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
-                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_TEMPERATURE)) {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
                         Log.e("eleutheria", "find device Temperature")
+                        mBluetoothLeService!!.connect(strDeviceAddress)
+                    }
+                }
+                Constants.MAIN_FUNCTION_INDEX_SETTING -> {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
+                        Log.e("eleutheria", "find device HeartBeatResult")
+                        mBluetoothLeService!!.connect(strDeviceAddress)
+                    }
+                }
+                Constants.MAIN_FUNCTION_INDEX_HB_RESULT -> {
+                    if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
+                        Log.e("eleutheria", "find device HeartBeatResult")
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
@@ -285,20 +314,20 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
             val action = intent.action
             if (BluetoothLeService.ACTION_GATT_CONNECTED == action) {
                 mConnected = true
-                RealmLog.debug("eleutheria : ACTION_GATT_CONNECTED")
+                debug("eleutheria : ACTION_GATT_CONNECTED")
 
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED == action) {
                 mConnected = false
-                RealmLog.debug("eleutheria : ACTION_GATT_DISCONNECTED")
+                debug("eleutheria : ACTION_GATT_DISCONNECTED")
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED == action) {
                 // Show all the supported services and characteristics on the user interface.
                 addGattServices(mBluetoothLeService!!.supportedGattServices)
                 activeNotification()
-                RealmLog.debug("eleutheria : ACTION_GATT_SERVICES_DISCOVERED")
+                debug("eleutheria : ACTION_GATT_SERVICES_DISCOVERED")
                 moveMainActivity()
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE == action) {
                 parsingData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA))
-                RealmLog.debug("eleutheria : ACTION_DATA_AVAILABLE")
+                debug("eleutheria : ACTION_DATA_AVAILABLE")
             }
         }
     }
@@ -387,12 +416,18 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
             Constants.MAIN_FUNCTION_INDEX_HB -> {
                 startActivity<HeartBeatMeasureActivity>()
             }
-            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-                startActivity<PressureActivity>()
+            Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
+                startActivity<FineDustActivity>()
             }
-            Constants.MAIN_FUNCTION_INDEX_REAR -> {
-                startActivity<RearActivity>()
+            Constants.MAIN_FUNCTION_INDEX_GAS -> {
+                startActivity<GasActivity>()
             }
+//            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+//                startActivity<PressureActivity>()
+//            }
+//            Constants.MAIN_FUNCTION_INDEX_REAR -> {
+//                startActivity<RearActivity>()
+//            }
             Constants.MAIN_FUNCTION_INDEX_UV -> {
                 startActivity<UvActivity>()
             }
@@ -401,6 +436,12 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
             }
             Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
                 startActivity<TemperatureActivity>()
+            }
+            Constants.MAIN_FUNCTION_INDEX_SETTING -> {
+                startActivity<SettingActivity>()
+            }
+            Constants.MAIN_FUNCTION_INDEX_HB_RESULT -> {
+                startActivity<HeartBeatResultActivity>()
             }
         }
 

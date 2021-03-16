@@ -6,7 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_statistic.*
+import kotlinx.android.synthetic.main.activity_statistic.bt_toolbar_back
+import kotlinx.android.synthetic.main.activity_statistic.tv_toolbar_title
+import kotlinx.android.synthetic.main.activity_statistic_sel.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -20,7 +24,10 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
 
-        setTitle(R.string.str_statistic_HeartBeat_title)
+        tv_toolbar_title.text = getString(R.string.str_statistic_HeartBeat_title)
+        bt_toolbar_back.setOnClickListener(this)
+
+//        setTitle(R.string.str_statistic_HeartBeat_title)
 
 //        tvDeviceName.text = Constants.strDeviceName
 
@@ -44,7 +51,6 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
             R.id.bt_toolbar_back -> {
                 onBackPressed()
             }
-
         }
 
     }

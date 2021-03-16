@@ -1,11 +1,14 @@
 package com.crc.masscustom.gyro
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
@@ -25,6 +28,7 @@ import java.util.*
 
 class GyroActivity : AppCompatActivity(), View.OnClickListener {
 
+    val handler: Handler = Handler1()
     private val mAlertTimer by lazy { Timer() }
     var isAlertOn = false
 
@@ -52,7 +56,11 @@ class GyroActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, IntentFilter(Constants.MESSAGE_SEND_GYRO))
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            mMessageReceiver, IntentFilter(
+                Constants.MESSAGE_SEND_GYRO
+            )
+        )
     }
 
     private fun alertByGyro() {
@@ -64,32 +72,49 @@ class GyroActivity : AppCompatActivity(), View.OnClickListener {
                     ivGyroOnoff.visibility = View.VISIBLE
                 }
 
-
-                if(isAlertOn) {
-                    ivGyroOnoff.setImageResource(R.drawable.gyrosensing_emergency_image2)
-                    clGyroLayout.backgroundColor = resources.getColor(R.color.colorWhite)
-
-                    isAlertOn = false
-                } else {
-                    ivGyroOnoff.setImageResource(R.drawable.gyrosensing_emergency_image1)
-                    clGyroLayout.backgroundColor = resources.getColor(R.color.colorE01F56)
-
-                    isAlertOn = true
-                }
+                val msg = handler.obtainMessage()
+                handler.sendMessage(msg)
+//                if(isAlertOn) {
+//                    ivGyroOnoff.setImageResource(R.drawable.gyrosensing_emergency_image2)
+//                    clGyroLayout.backgroundColor = resources.getColor(R.color.colorWhite)
+//
+//                    isAlertOn = false
+//                } else {
+//                    ivGyroOnoff.setImageResource(R.drawable.gyrosensing_ready_image)
+////                    clGyroLayout.backgroundColor = resources.getColor(R.color.colorE01F56)
+//                    clGyroLayout.backgroundColor = resources.getColor(R.color.colorActionBar)
+//
+//                    isAlertOn = true
+//                }
 
             }
 
         }
-        mAlertTimer.schedule(task, 1000,1000)
+        mAlertTimer.schedule(task, 1000, 1000)
+    }
+
+    inner class Handler1 : Handler() {
+        override fun handleMessage(msg: Message?) = if(isAlertOn) {
+            ivGyroOnoff.setImageResource(R.drawable.gyrosensing_emergency_image2)
+            clGyroLayout.backgroundColor = resources.getColor(R.color.colorWhite)
+
+            isAlertOn = false
+        } else {
+            ivGyroOnoff.setImageResource(R.drawable.gyrosensing_emergency_image1)
+            clGyroLayout.backgroundColor = resources.getColor(R.color.colorActionBar)
+
+            isAlertOn = true
+        }
     }
 
     private fun sendSMS() {
-        var strPhoneNumber = Constants.strGyroNumber
+        val strPhoneNumber = Constants.strGyroNumber
 
         val smsManager = SmsManager.getDefault()
 
-        val message = "Gyro Action Message!! "
-        var strFirstString = strPhoneNumber.substring(0, 1)
+//        val message = "Gyro Action Message!! "
+        val message = "비상 상황입니다! 구조가 필요합니다!"
+        val strFirstString = strPhoneNumber.substring(0, 1)
 
         if(strFirstString.equals("0")) {
             Log.e("eleutheria", "strPhoneNumber : $strPhoneNumber")
@@ -98,7 +123,7 @@ class GyroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendCall() {
-        var strPhoneNumber = Constants.strGyroNumber
+        val strPhoneNumber = Constants.strGyroNumber
 
         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$strPhoneNumber"))
         startActivity(intent)
@@ -111,8 +136,8 @@ class GyroActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.iv_gyro_ready -> {
                 alertByGyro()
-//                sendSMS()
-//                sendCall()
+                sendSMS()
+                sendCall()
             }
         }
     }
@@ -139,4 +164,5 @@ class GyroActivity : AppCompatActivity(), View.OnClickListener {
         }
 
     }
+
 }

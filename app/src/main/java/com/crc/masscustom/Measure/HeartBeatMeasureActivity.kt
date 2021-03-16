@@ -12,6 +12,9 @@ import android.view.View
 import android.widget.TextView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.bluetooth.BluetoothActivity
+import com.crc.masscustom.main.LoadingActivity
+import com.crc.masscustom.main.LoadingResultActivity
 import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_main_grid.tv_toolbar_title
 import kotlinx.android.synthetic.main.activity_pressure.bt_toolbar_back
@@ -43,6 +46,8 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
         tvLoading?.text = "0 %"
 
         Constants.bIsStartMeasure = false
+
+        Constants.nAvgHeartBeat = 0
 
         timerTask = timer(period = 3000) {
             startInitMeasure()
@@ -102,47 +107,79 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun finishMeasure() {
-        startActivity<HeartBeatResultActivity>(Constants.HB_MEASUREMENT_DATA to arHBData)
+
+        val avgHeartBeat = sumHeartBeat(arHBData).toInt()
+        Constants.nAvgHeartBeat = avgHeartBeat
+
+        startActivity<LoadingResultActivity>()
+//        Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_HB_RESULT
+//        startActivity(intentFor<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB_RESULT).clearTask().newTask())
+
+//        startActivity<HeartBeatResultActivity>(Constants.HB_MEASUREMENT_DATA to arHBData)
         Log.e("eleutheria", "finish measure")
+    }
+
+    private fun sumHeartBeat(measuredHeartBeat: ArrayList<String>): Long {
+
+        var sumHeartBeat : Long = 0
+
+        for(heartBeat in measuredHeartBeat) {
+            sumHeartBeat += heartBeat.toInt()
+        }
+
+        var avgHeartBeat : Long = 0
+        if(sumHeartBeat > 0) {
+            avgHeartBeat = sumHeartBeat / measuredHeartBeat.size
+        }
+
+        return avgHeartBeat
     }
 
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if(intent!!.hasExtra("value")) {
                 val message = intent!!.getStringExtra("value")
-                Log.e("eleutheria", "message : $message")
+                    Log.e("eleutheria", "message : $message")
 
-                if(message == ".") {
-//                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
-                    var arData = strReceiveData.split("\r\n")
-
-                    for(data in arData) {
-                        if(data.contains("HB")) {
-                            if(Constants.bIsStartMeasure && !bIsFinish) {
-                                Log.e("eleutheria", "HB : $data")
-                                arHBData.add(data.substring(3))
-//                                arHBData.add(data)
-                            }
-                        }
+                if(Constants.bIsStartMeasure && !bIsFinish) {
+                    Log.e("eleutheria", "HB : $message")
+                    if(message.toInt() > 0) {
+                        arHBData.add(message)
                     }
-//                    if(arData.size > 8) {
-//                        var fLeftDistance = arData[3].toFloat()
-//                        var fBackDistance = arData[5].toFloat()
-//                        var fRightDistance = arData[7].toFloat()
-//
-//                        var nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 1000)
-//                        var nBackRear = commonUtils.calcRearDetect(fBackDistance / 1000)
-//                        var nRightRear = commonUtils.calcRearDetect(fRightDistance / 1000)
-//
-//                        displayLeftRear(nLeftRear)
-//                        displayRightRear(nRightRear)
-//                        displayBackRear(nBackRear)
-//                    }
-                    strReceiveData = ""
-                } else {
-                    strReceiveData += message
-//                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
+//                                arHBData.add(data)
                 }
+
+//                if(message == ".") {
+////                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
+//                    var arData = strReceiveData.split("\r\n")
+//
+//                    for(data in arData) {
+//                        if(data.contains("HB")) {
+//                            if(Constants.bIsStartMeasure && !bIsFinish) {
+//                                Log.e("eleutheria", "HB : $data")
+//                                arHBData.add(data.substring(3))
+////                                arHBData.add(data)
+//                            }
+//                        }
+//                    }
+////                    if(arData.size > 8) {
+////                        var fLeftDistance = arData[3].toFloat()
+////                        var fBackDistance = arData[5].toFloat()
+////                        var fRightDistance = arData[7].toFloat()
+////
+////                        var nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 1000)
+////                        var nBackRear = commonUtils.calcRearDetect(fBackDistance / 1000)
+////                        var nRightRear = commonUtils.calcRearDetect(fRightDistance / 1000)
+////
+////                        displayLeftRear(nLeftRear)
+////                        displayRightRear(nRightRear)
+////                        displayBackRear(nBackRear)
+////                    }
+//                    strReceiveData = ""
+//                } else {
+//                    strReceiveData += message
+////                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
+//                }
             }
         }
     }

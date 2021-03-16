@@ -7,6 +7,7 @@ class Constants {
         var strDeviceAddress = "Not Connected"
         var strHapticNumber : String = "112"
         var strGyroNumber : String = "119"
+        var strEmergencyNumber : String = "119"
         val SPLASH_LOADING_TIME : Long = 3000
         val SPLASH_WAITING_TIME : Long = 1000
 
@@ -14,6 +15,7 @@ class Constants {
 
         val PREF_HAPTIC_CALL_NUMBER : String                        = "prefHapticCallNumber"
         val PREF_GYRO_CALL_NUMBER : String                          = "prefGyroCallNumber"
+        val PREF_EMERGENCY_CALL_NUMBER : String                          = "prefEmergencyCallNumber"
 
         val BATTERY_DISPLAY_REFRESH_TIME : Long = 1000
 
@@ -45,6 +47,7 @@ class Constants {
 
         var measureingHeartBeat = ArrayList<Int>()
         var batteryPercentage : String = "100"
+        var nAvgHeartBeat = 0
 
         val USER_STATUS_NORMAL = 0
 
@@ -67,13 +70,22 @@ class Constants {
         val SELECT_FUNCTION_INDEX                       = "Select_Index"
 
         val MAIN_FUNCTION_INDEX_HB                      = 1
-        val MAIN_FUNCTION_INDEX_PRESSURE                = 2
-        val MAIN_FUNCTION_INDEX_REAR                    = 3
+        val MAIN_FUNCTION_INDEX_FINEDUST                = 2
+        val MAIN_FUNCTION_INDEX_GAS                     = 3
+//        val MAIN_FUNCTION_INDEX_PRESSURE                = 2
+//        val MAIN_FUNCTION_INDEX_REAR                    = 3
         val MAIN_FUNCTION_INDEX_UV                      = 4
         val MAIN_FUNCTION_INDEX_GYRO                    = 5
         val MAIN_FUNCTION_INDEX_TEMPERATURE             = 6
         val MAIN_FUNCTION_INDEX_STATISTICS              = 7
         val MAIN_FUNCTION_INDEX_SETTING                 = 8
+        val MAIN_FUNCTION_INDEX_HB_RESULT               = 9
+
+        val RECIEVE_DATA_PREFIX_FINEDUST                        = "PM"
+        val RECIEVE_DATA_PREFIX_TVOC                            = "TVOC"
+        val RECIEVE_DATA_PREFIX_CO2                             = "CO"
+        val RECIEVE_DATA_PREFIX_UV                              = "UV"
+        val RECIEVE_DATA_PREFIX_TEMPERATURE                     = "TE"
 
 
         var curYearOfDay = 2018
@@ -84,16 +96,20 @@ class Constants {
 
 
         val MESSAGE_SEND_HB                             = "HBMessage"
+        val MESSAGE_SEND_FINEDUST                       = "FineDustMessage"
+        val MESSAGE_SEND_GAS                            = "GasMessage"
         val MESSAGE_SEND_PRESSURE                       = "PressureMessage"
         val MESSAGE_SEND_REAR                           = "RearMessage"
         val MESSAGE_SEND_UV                             = "UVMessage"
         val MESSAGE_SEND_GYRO                           = "GyroMessage"
         val MESSAGE_SEND_TEMPERATURE                    = "TemperatureMessage"
 
-        val ACTION_GYRO_SIGNAL                          = 1
+        val ACTION_GYRO_SIGNAL                          = "1"
 
         // Test
 //        val MODULE_ADDRESS_HB                             = "98:D3:33:80:BA:7A"
+//        val MODULE_ADDRESS_FINEDUST                      = "20:15:03:27:16:49"
+//        val MODULE_ADDRESS_GAS                           = "98:D3:51:FD:92:80"
 //        val MODULE_ADDRESS_PRESSURE                       = "98:D3:33:80:BA:7A"
 //        val MODULE_ADDRESS_REAR                           = "98:D3:A1:FD:61:3B"
 //        val MODULE_ADDRESS_UV                             = "E0:E5:CF:B7:CF:0F"
@@ -101,14 +117,36 @@ class Constants {
 //        val MODULE_ADDRESS_TEMPERATURE                    = "98:D3:A1:FD:5E:48"
 
 
-        //        // ShowCase
-        val MODULE_ADDRESS_HB                             = "20:15:03:27:16:49"
-        val MODULE_ADDRESS_PRESSURE                       = "20:15:03:27:16:49"
-        val MODULE_ADDRESS_REAR                           = "98:D3:51:FD:92:80"
-        //        val MODULE_ADDRESS_UV                             = "0C:B2:B7:47:59:7F"
-        val MODULE_ADDRESS_UV                             = "E8:A5:70:A4:5F:92" //sense test
-        val MODULE_ADDRESS_GYRO                           = "F0:45:DA:10:B3:F9"
-        val MODULE_ADDRESS_TEMPERATURE                    = "98:D3:61:FD:71:2F"
+//        // ShowCase
+//        val MODULE_ADDRESS_HB                             = "20:15:03:27:16:49"
+//        val MODULE_ADDRESS_FINEDUST                      = "20:15:03:27:16:49"
+//        val MODULE_ADDRESS_GAS                           = "98:D3:51:FD:92:80"
+//        val MODULE_ADDRESS_PRESSURE                       = "20:15:03:27:16:49"
+//        val MODULE_ADDRESS_REAR                           = "98:D3:51:FD:92:80"
+//        val MODULE_ADDRESS_UV                             = "0C:B2:B7:47:59:7F"
+//        val MODULE_ADDRESS_UV                             = "E8:A5:70:A4:5F:92" //sense test
+//        val MODULE_ADDRESS_GYRO                           = "F0:45:DA:10:B3:F9"
+//        val MODULE_ADDRESS_TEMPERATURE                    = "98:D3:61:FD:71:2F"
 
+
+        // Address
+        val MODULE_ADDRESS_HB                                   = "30:AE:A4:F5:21:C2"
+//        val MODULE_ADDRESS_GAS                                  = "24:6F:28:7B:7E:F2"
+        val MODULE_ADDRESS_GAS                                  = "50:02:91:95:59:3E"
+        val MODULE_ADDRESS_GYRO                                 = "50:02:91:95:59:06"
+
+        // Service UUID
+        val MODULE_SERVICE_UUID_HB                              = "6E400001-B5A3-F393-E0A9-E50E24DCCA9F"
+        val MODULE_SERVICE_UUID_GAS                             = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+        val MODULE_SERVICE_UUID_GYRO                            = "6E400001-B5A3-F393-E0A9-E50E24DCCA9D"
+
+
+        // Characteristic UUID
+        val MODULE_CHARACTERISTIC_UUID_HB_RX                    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9F"
+        val MODULE_CHARACTERISTIC_UUID_HB_TX                    = "6E400003-B5A3-F393-E0A9-E50E24DCCA9F"
+        val MODULE_CHARACTERISTIC_UUID_GAS_RX                   = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+        val MODULE_CHARACTERISTIC_UUID_GAS_TX                   = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+        val MODULE_CHARACTERISTIC_UUID_GYRO_RX                  = "6E400002-B5A3-F393-E0A9-E50E24DCCA9D"
+        val MODULE_CHARACTERISTIC_UUID_GYRO_TX                  = "6E400003-B5A3-F393-E0A9-E50E24DCCA9D"
     }
 }

@@ -21,6 +21,7 @@ import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.base.MonthlyStatisticData
+import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.database.DBTemperatureModel
 import io.realm.Realm
 import io.realm.RealmResults

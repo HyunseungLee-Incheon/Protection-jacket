@@ -21,6 +21,7 @@
     <color name="colorUVDangerous">#FF6666</color>
     <color name="colorWhite">#FFFFFF</color>
 
+    <color name="colorActionBar">#26344D</color>
 
 
 </resources>

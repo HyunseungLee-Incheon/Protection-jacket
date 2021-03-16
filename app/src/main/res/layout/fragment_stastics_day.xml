@@ -31,7 +31,8 @@
             android:layout_marginEnd="70dp"
             android:background="@drawable/statistics_daily_leftarrow_button"
             app:layout_constraintEnd_toStartOf="@+id/tvDay"
-            app:layout_constraintTop_toTopOf="@+id/tvDay" />
+            app:layout_constraintTop_toTopOf="@+id/tvDay"
+            android:visibility="gone"/>
 
     <Button
             android:id="@+id/btTomorrow"
@@ -41,7 +42,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/statistics_daily_rightarrow_button"
             app:layout_constraintStart_toEndOf="@+id/tvDay"
-            app:layout_constraintTop_toTopOf="@+id/tvDay" />
+            app:layout_constraintTop_toTopOf="@+id/tvDay"
+            android:visibility="gone"/>
 
     <com.anychart.AnyChartView
             android:id="@+id/acChartDay"

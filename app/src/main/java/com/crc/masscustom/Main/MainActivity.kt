@@ -13,7 +13,6 @@ import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.statistics.StatisticActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main_grid.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 

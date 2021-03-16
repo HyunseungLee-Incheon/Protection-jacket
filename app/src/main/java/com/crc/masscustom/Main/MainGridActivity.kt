@@ -12,21 +12,20 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import com.crc.masscustom.measure.HeartBeatMeasureActivity
 import com.crc.masscustom.R
-import com.crc.masscustom.base.CommonUtils
-import com.crc.masscustom.base.Constants
-import com.crc.masscustom.gyro.GyroActivity
-import com.crc.masscustom.pressure.PressureActivity
-import com.crc.masscustom.rear.RearActivity
-import com.crc.masscustom.setting.SettingActivity
-import com.crc.masscustom.statistics.StatisticGridActivity
-import com.crc.masscustom.statistics.StatisticSelActivity
+import com.crc.masscustom.base.*
+import com.crc.masscustom.finedust.FineDustActivity
+import com.crc.masscustom.gas.GasActivity
 import com.crc.masscustom.temperature.TemperatureActivity
+import com.crc.masscustom.gyro.GyroActivity
+import com.crc.masscustom.measure.HeartBeatMeasureActivity
+import com.crc.masscustom.setting.SettingActivity
+import com.crc.masscustom.statistics.StatisticSelActivity
 import com.crc.masscustom.uv.UvActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main_grid.*
 import org.jetbrains.anko.startActivity
+import com.crc.masscustom.base.Constants
 
 
 class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
@@ -61,8 +60,8 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
 
         val mainIconList = arrayListOf<Int>(
             R.drawable.main_icon_heartbeat,
-            R.drawable.main_icon_haptic_pressure,
-            R.drawable.main_icon_rear,
+            R.drawable.main_icon_finedust,
+            R.drawable.main_icon_gas,
             R.drawable.main_icon_uv,
             R.drawable.main_icon_gyro,
             R.drawable.main_icon_temperature,
@@ -129,23 +128,34 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         when(position) {
             0 -> { // heartbeat
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_HB
-//                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB)
-                startActivity<HeartBeatMeasureActivity>()
+//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB)
+//                startActivity<HeartBeatMeasureActivity>()
+                startActivity<LoadingResultActivity>()
             }
-            1 -> { // pressure
-                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_PRESSURE
-//                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_PRESSURE)
-                startActivity<PressureActivity>()
+            1 -> { // finedust
+                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_FINEDUST
+                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_FINEDUST)
+//                startActivity<FineDustActivity>()
             }
-            2 -> { // rear
-                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_REAR
-//                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_REAR)
-                startActivity<RearActivity>()
+            2 -> { // gas
+                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_GAS
+                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_GAS)
+//                startActivity<GasActivity>()
             }
+//            1 -> { // pressure
+//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_PRESSURE
+////                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_PRESSURE)
+//                startActivity<PressureActivity>()
+//            }
+//            2 -> { // rear
+//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_REAR
+////                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_REAR)
+//                startActivity<RearActivity>()
+//            }
             3 -> { // uv
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_UV
-//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_UV)
-                startActivity<UvActivity>()
+                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_UV)
+//                startActivity<UvActivity>()
             }
             4 -> { // gyro
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_GYRO
@@ -154,13 +164,15 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
             }
             5 -> { // temperature
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_TEMPERATURE
-//                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_TEMPERATURE)
-                startActivity<TemperatureActivity>()
+                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_TEMPERATURE)
+//                startActivity<TemperatureActivity>()
             }
             6 -> { // statistic
                 startActivity<StatisticSelActivity>()
             }
             7 -> { // setting
+//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_SETTING
+//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_SETTING)
                 startActivity<SettingActivity>()
             }
         }
