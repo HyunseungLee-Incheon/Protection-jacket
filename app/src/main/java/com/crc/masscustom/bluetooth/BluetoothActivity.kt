@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
 import android.content.*
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -23,6 +24,7 @@ import com.crc.masscustom.main.MainGridActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import kotlinx.android.synthetic.main.activity_bluetooth.*
+import kotlinx.android.synthetic.main.activity_bluetooth.tv_toolbar_title
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.util.*
@@ -74,7 +76,8 @@ class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth)
 
-        setTitle(R.string.str_bluetooth_title)
+        tv_toolbar_title.text = getString(R.string.str_bluetooth_title)
+//        setTitle(R.string.str_bluetooth_title)
 
         mHandler = Handler()
 
@@ -218,6 +221,7 @@ class BluetoothActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val mLeScanCallback = BluetoothAdapter.LeScanCallback { device, rssi, scanRecord ->
         runOnUiThread {
+            Log.e("eleutheria", "name : ${device.name}, address : ${device.address}")
             mLeBluetoothListAdapter!!.addDevice(device)
             mLeBluetoothListAdapter!!.notifyDataSetChanged()
         }

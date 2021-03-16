@@ -9,7 +9,7 @@
             android:id="@+id/tb_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorActionBar"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:contentInsetLeft="0dp"
@@ -50,6 +50,65 @@
 
     </android.support.v7.widget.Toolbar>
 
+        <TextView
+            android:id="@+id/tv_emergency_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="31dp"
+            android:text="@string/str_setting_emergency_call"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tb_toolbar" />
+
+        <Button
+                android:id="@+id/bt_emergency_119"
+                android:layout_width="129dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="21dp"
+                android:background="@drawable/selector_button_setting_emergency119"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_emergency_call" />
+
+        <Button
+                android:id="@+id/bt_emergency_contact"
+                android:layout_width="129dp"
+                android:layout_height="19dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/selector_button_setting_emergency"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_emergency_call" />
+
+        <TextView
+                android:id="@+id/tv_emergency_number"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="42dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_emergency_119" />
+
+        <ImageView
+                android:id="@+id/iv_emergency_number_underline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/tv_emergency_number"
+                app:layout_constraintStart_toStartOf="@+id/tv_emergency_number"
+                app:layout_constraintTop_toBottomOf="@+id/tv_emergency_number"
+                app:srcCompat="@drawable/settings_inputline" />
+
+    <EditText
+            android:id="@+id/et_heartbeat"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/iv_emergency_number_underline"
+            app:layout_constraintTop_toBottomOf="@+id/iv_emergency_number_underline" />
+
     <TextView
             android:id="@+id/tv_pressure_call"
             android:layout_width="wrap_content"
@@ -58,6 +117,7 @@
             android:layout_marginTop="31dp"
             android:text="@string/str_setting_pressure_call"
             android:textSize="24sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tb_toolbar" />
 
@@ -67,7 +127,8 @@
             android:layout_height="19dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="21dp"
-            android:text="@string/str_setting_call_112"
+            android:background="@drawable/selector_button_setting_112"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pressure_call" />
 
@@ -77,18 +138,30 @@
             android:layout_height="19dp"
             android:layout_marginTop="21dp"
             android:layout_marginEnd="25dp"
-            android:text="@string/str_setting_contact"
+            android:background="@drawable/selector_button_setting_contact"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pressure_call" />
 
     <TextView
             android:id="@+id/tv_pressure_number"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="42dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bt_pressure_112" />
+
+    <ImageView
+            android:id="@+id/iv_haptic_call_number_underline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tv_pressure_number"
+            app:layout_constraintStart_toStartOf="@+id/tv_pressure_number"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pressure_number"
+            app:srcCompat="@drawable/settings_inputline" />
 
     <TextView
             android:id="@+id/tv_gyro_call"
@@ -98,6 +171,7 @@
             android:layout_marginTop="80dp"
             android:text="@string/str_setting_gyro_call"
             android:textSize="24sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pressure_number" />
 
@@ -107,7 +181,8 @@
             android:layout_height="19dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="21dp"
-            android:text="@string/str_setting_call_119"
+            android:background="@drawable/selector_button_setting_119"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_gyro_call" />
 
@@ -117,16 +192,29 @@
             android:layout_height="19dp"
             android:layout_marginTop="21dp"
             android:layout_marginEnd="25dp"
-            android:text="@string/str_setting_contact"
+            android:background="@drawable/selector_button_setting_contact"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_gyro_call" />
 
     <TextView
             android:id="@+id/tv_gyro_number"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="42dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bt_gyro_119" />
+
+    <ImageView
+            android:id="@+id/iv_gyro_call_number_underline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tv_gyro_number"
+            app:layout_constraintStart_toStartOf="@+id/tv_gyro_number"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gyro_number"
+            app:srcCompat="@drawable/settings_inputline" />
+
 </android.support.constraint.ConstraintLayout>

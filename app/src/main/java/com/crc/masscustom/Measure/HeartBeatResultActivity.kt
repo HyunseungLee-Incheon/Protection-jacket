@@ -43,22 +43,24 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
         val commonUtils = CommonUtils()
 
-        val intent = intent
-        if(intent != null) {
-            arHBData = intent.getStringArrayListExtra(Constants.HB_MEASUREMENT_DATA)
-            Log.e("eleutheria", "arHBData : Size $arHBData")
-        }
+//        val intent = intent
+//        if(intent != null) {
+//            arHBData = intent.getStringArrayListExtra(Constants.HB_MEASUREMENT_DATA)
+//            Log.e("eleutheria", "arHBData : Size $arHBData")
+//        }
 
         tvResultDate = findViewById<TextView>(R.id.tvResultDate)
         tvResultHB = findViewById<TextView>(R.id.tvResultHB)
 
-        val alMeasureHeartBeat = arHBData
+        val avgHeartBeat = Constants.nAvgHeartBeat
 
-        var avgHeartBeat = sumHeartBeat(alMeasureHeartBeat).toInt()
-        avgHeartBeat = 76
+//        val alMeasureHeartBeat = arHBData
+
+//        val avgHeartBeat = sumHeartBeat(alMeasureHeartBeat).toInt()
+        //avgHeartBeat = 76
         setResultHB(avgHeartBeat)
 
-        var curDate = commonUtils.getCurrentDate()
+        val curDate = commonUtils.getCurrentDate()
         setCurDate(curDate)
         makeResultDate(curDate)
 
@@ -87,23 +89,25 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
             finishResult()
         }
+
+        LoadingActivity.mBluetoothLeService!!.writeCharacteristic(avgHeartBeat.toString())
     }
 
-    private fun sumHeartBeat(measuredHeartBeat: ArrayList<String>): Long {
-
-        var sumHeartBeat : Long = 0
-
-        for(heartBeat in measuredHeartBeat) {
-            sumHeartBeat += heartBeat.toInt()
-        }
-
-        var avgHeartBeat : Long = 0
-        if(sumHeartBeat > 0) {
-            avgHeartBeat = sumHeartBeat / measuredHeartBeat.size
-        }
-
-        return avgHeartBeat
-    }
+//    private fun sumHeartBeat(measuredHeartBeat: ArrayList<String>): Long {
+//
+//        var sumHeartBeat : Long = 0
+//
+//        for(heartBeat in measuredHeartBeat) {
+//            sumHeartBeat += heartBeat.toInt()
+//        }
+//
+//        var avgHeartBeat : Long = 0
+//        if(sumHeartBeat > 0) {
+//            avgHeartBeat = sumHeartBeat / measuredHeartBeat.size
+//        }
+//
+//        return avgHeartBeat
+//    }
 
     private fun setCurDate(curDate : List<String>) {
         var curYYMMDD = "${curDate[0]}/${curDate[1]}/${curDate[2]}"

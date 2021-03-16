@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.LocalBroadcastManager
@@ -13,12 +14,10 @@ import android.widget.TextView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.main.MainActivity
 import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_uv.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
+import org.jetbrains.anko.*
 
 
 class UvActivity : AppCompatActivity(), View.OnClickListener {

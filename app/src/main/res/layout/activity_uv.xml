@@ -10,7 +10,7 @@
             android:id="@+id/tb_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorActionBar"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:contentInsetLeft="0dp"
@@ -75,13 +75,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_uv_title"
-            app:srcCompat="@drawable/img_loading" />
+            app:srcCompat="@drawable/uvsensing_circle" />
 
     <TextView
             android:id="@+id/tv_uv_factor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:includeFontPadding="false"
             android:text="0"
             android:textSize="70sp"
@@ -93,12 +93,12 @@
             android:id="@+id/tv_uv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="@string/str_uv_normal"
             android:textSize="36sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_uv_factor"
             app:layout_constraintEnd_toEndOf="@id/iv_uv_round_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_uv_round_bg" />
+            app:layout_constraintStart_toStartOf="@id/iv_uv_round_bg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_uv_factor" />
 
     <ImageView
             android:id="@+id/iv_uv_high"

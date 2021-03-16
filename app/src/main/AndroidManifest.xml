@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
             android:name=".base.MyApplication"
@@ -47,7 +50,22 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".main.MainGridActivity" />
         </activity>
+        <activity android:name=".measure.HeartBeatResultActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".main.MainGridActivity" />
+        </activity>
         <activity android:name=".main.LoadingActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".main.MainGridActivity" />
+        </activity>
+        <activity android:name=".main.LoadingResultActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".main.MainGridActivity" />
+        </activity>
+        <activity android:name=".main.LoadingClassicActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".main.MainGridActivity" />
@@ -88,6 +106,16 @@
                     android:value=".main.MainGridActivity" />
         </activity>
         <activity android:name=".statistics.StatisticSelActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".main.MainGridActivity" />
+        </activity>
+        <activity android:name=".finedust.FineDustActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".main.MainGridActivity" />
+        </activity>
+        <activity android:name=".gas.GasActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".main.MainGridActivity" />

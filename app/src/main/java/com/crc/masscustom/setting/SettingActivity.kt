@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.main.LoadingActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity(), View.OnClickListener {
@@ -18,6 +19,7 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
     private var settings: SharedPreferences? = null
     lateinit var tvPressureNumber: TextView
     lateinit var tvGyroNumber: TextView
+    lateinit var tvEmergencyNumber: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +31,23 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
         settings = getSharedPreferences(Constants.SHARED_PREF_SEUPDATA, Context.MODE_PRIVATE)
 
+
         tvPressureNumber = findViewById(R.id.tv_pressure_number)
         tvGyroNumber = findViewById(R.id.tv_gyro_number)
+        tvEmergencyNumber = findViewById(R.id.tv_emergency_number)
+
 
         tvPressureNumber.text = Constants.strHapticNumber
         tvGyroNumber.text = Constants.strGyroNumber
+        tvEmergencyNumber.text = Constants.strEmergencyNumber
 
         bt_pressure_112.setOnClickListener(this)
         bt_pressure_contact.setOnClickListener(this)
         bt_gyro_119.setOnClickListener(this)
         bt_gyro_contact.setOnClickListener(this)
+        bt_emergency_119.setOnClickListener(this)
+        bt_emergency_contact.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
@@ -68,6 +77,20 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
                 val contactIntent = Intent(Intent.ACTION_PICK)
                 contactIntent.data = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
                 startActivityForResult(contactIntent, 1)
+            }
+            R.id.bt_emergency_119 -> {
+                Constants.strEmergencyNumber = getString(R.string.str_setting_119)
+                tvEmergencyNumber.text = Constants.strEmergencyNumber
+
+                val editor = settings!!.edit()
+                editor.putString(Constants.PREF_EMERGENCY_CALL_NUMBER, Constants.strEmergencyNumber)
+                editor.apply()
+            }
+            R.id.bt_emergency_contact -> {
+                val contactIntent = Intent(Intent.ACTION_PICK)
+                contactIntent.data = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+                startActivityForResult(contactIntent, 1)
+//                LoadingActivity.mBluetoothLeService!!.writeTimeCharacteristic(et_heartbeat.text.toString())
             }
             R.id.bt_toolbar_back -> {
                 onBackPressed()
@@ -99,11 +122,11 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
                 editor.apply()
 
             } else if(requestCode == 1) {
-                Constants.strGyroNumber = number
-                tvGyroNumber.text = Constants.strGyroNumber
+                Constants.strEmergencyNumber = number
+                tvEmergencyNumber.text = Constants.strEmergencyNumber
 
                 val editor = settings!!.edit()
-                editor.putString(Constants.PREF_GYRO_CALL_NUMBER, Constants.strGyroNumber)
+                editor.putString(Constants.PREF_EMERGENCY_CALL_NUMBER, Constants.strEmergencyNumber)
                 editor.apply()
             }
         }

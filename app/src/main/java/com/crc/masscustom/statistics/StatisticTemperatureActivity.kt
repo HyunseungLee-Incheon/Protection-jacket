@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.main.MainGridActivity
 import kotlinx.android.synthetic.main.activity_statistic.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -21,7 +22,9 @@ class StatisticTemperatureActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_statistic)
 
-        setTitle(R.string.str_statistic_Temperature_title)
+        tv_toolbar_title.text = getString(R.string.str_statistic_Temperature_title)
+        bt_toolbar_back.setOnClickListener(this)
+//        setTitle(R.string.str_statistic_Temperature_title)
 
         bt_statistic_day.setOnClickListener(this)
         bt_statistic_month.setOnClickListener(this)

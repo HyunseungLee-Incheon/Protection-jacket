@@ -10,6 +10,7 @@
     <string name="str_splash_welcome">WELCOME</string>
 
     // Bluetooth
+    <string name="str_toast_turn_off_do_not_disturb">Please turn off Do Not Disturb mode.</string>
     <string name="str_bluetooth_title">Bluetooth 기기 검색</string>
     <string name="str_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="str_bluetooth_unknown_characteristic">Unknown characteristic</string>
@@ -60,6 +61,7 @@
     <string name="str_rear_title">후방</string>
 
     // Uv
+    <string name="str_uv_title_eng">UV Sensing</string>
     <string name="str_uv_title">UV</string>
     <string name="str_uv_current_uv">현재 자외선 지수</string>
     <string name="str_uv_low">낮음</string>
@@ -72,11 +74,13 @@
     <string name="str_gyro_title">GYRO</string>
 
     // Temperature
+    <string name="str_temperature_title_eng">Temperature</string>
     <string name="str_temperature_title">온도</string>
     <string name="str_temperature_current_temperature">현재 기온은</string>
     <string name="str_main_default_temperature">\u00B0C</string>
 
     // Setting
+    <string name="str_setting_title_eng">Settings</string>
     <string name="str_setting_title">설정</string>
     <string name="str_setting_pressure_call">Haptic-Pressure Call</string>
     <string name="str_setting_gyro_call">Gyro-sensing Call</string>
@@ -86,7 +90,18 @@
     <string name="str_setting_112">112</string>
     <string name="str_setting_119">119</string>
 
+    <string name="str_setting_emergency_call">Emergency Call</string>
+
+    // FineDust
+    <string name="str_finedust_title_eng">Fine Dust</string>
+    <string name="str_finedust_title">미세 먼지</string>
+
+    // FineDust
+    <string name="str_gas_title_eng">GAS</string>
+    <string name="str_gas_title">가스</string>
+
     // Loading
     <string name="str_loading_text">Loading..</string>
+    <string name="str_loading_result_text">Calculating..</string>
 
 </resources>

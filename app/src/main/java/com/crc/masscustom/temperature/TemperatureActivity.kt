@@ -1,20 +1,22 @@
 package com.crc.masscustom.temperature
 
+import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.crc.masscustom.R
-import com.crc.masscustom.base.CommonUtils
-import com.crc.masscustom.base.Constants
-import com.crc.masscustom.base.CurrentDate
-import com.crc.masscustom.base.TemperatureData
+import com.crc.masscustom.base.*
+import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.database.DBTemperatureModel
 import com.crc.masscustom.main.MainGridActivity
 import io.realm.Realm
@@ -23,6 +25,7 @@ import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 
+
 class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
 
     val realm: Realm = Realm.getDefaultInstance()
@@ -30,7 +33,7 @@ class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var tvTemperatureText: TextView
     lateinit var ivTemperatureBg: ImageView
-    var nTemperature = 15
+    var nTemperature = 0
     var strReceiveData = ""
 
 //    private val mBtHandler = BluetoothHandler()
@@ -128,25 +131,27 @@ class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
             if(intent!!.hasExtra("value")) {
                 val message = intent!!.getStringExtra("value")
 
+                saveTemperature(message.toInt())
+                displayTemperature(message.toInt())
 
-                if(message.contains("\r\n")) {
-                    strReceiveData += message
-
-                    val arData = strReceiveData.split(" : ")
-
-                    if(arData.size > 1) {
-                        val arTempData = arData[1].split(".")
-//                        val arTempData = strTempData[0]
-
-                        nTemperature = arTempData[0].toInt()
-                        saveTemperature(nTemperature)
-                        displayTemperature(nTemperature)
-                    }
-                    strReceiveData = ""
-
-                } else {
-                    strReceiveData += message
-                }
+//                if(message.contains("\r\n")) {
+//                    strReceiveData += message
+//
+//                    val arData = strReceiveData.split(" : ")
+//
+//                    if(arData.size > 1) {
+//                        val arTempData = arData[1].split(".")
+////                        val arTempData = strTempData[0]
+//
+//                        nTemperature = arTempData[0].toInt()
+//                        saveTemperature(nTemperature)
+//                        displayTemperature(nTemperature)
+//                    }
+//                    strReceiveData = ""
+//
+//                } else {
+//                    strReceiveData += message
+//                }
             }
         }
 

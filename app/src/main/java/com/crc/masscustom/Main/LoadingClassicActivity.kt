@@ -19,6 +19,8 @@ import com.crc.masscustom.base.BluetoothClassicManager
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.bluetooth.BluetoothActivity
 import com.crc.masscustom.bluetooth.BluetoothLeService
+import com.crc.masscustom.finedust.FineDustActivity
+import com.crc.masscustom.gas.GasActivity
 import com.crc.masscustom.gyro.GyroActivity
 import com.crc.masscustom.measure.HeartBeatMeasureActivity
 import com.crc.masscustom.pressure.PressureActivity
@@ -136,12 +138,18 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
             Constants.MAIN_FUNCTION_INDEX_HB -> {
                 startActivity<HeartBeatMeasureActivity>()
             }
-            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-                startActivity<PressureActivity>()
+            Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
+                startActivity<FineDustActivity>()
             }
-            Constants.MAIN_FUNCTION_INDEX_REAR -> {
-                startActivity<RearActivity>()
+            Constants.MAIN_FUNCTION_INDEX_GAS -> {
+                startActivity<GasActivity>()
             }
+//            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+//                startActivity<PressureActivity>()
+//            }
+//            Constants.MAIN_FUNCTION_INDEX_REAR -> {
+//                startActivity<RearActivity>()
+//            }
             Constants.MAIN_FUNCTION_INDEX_UV -> {
                 startActivity<UvActivity>()
             }
@@ -162,12 +170,18 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
             Constants.MAIN_FUNCTION_INDEX_HB -> {
                 strActionName = Constants.MESSAGE_SEND_HB
             }
-            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-                strActionName = Constants.MESSAGE_SEND_PRESSURE
+            Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
+                strActionName = Constants.MESSAGE_SEND_FINEDUST
             }
-            Constants.MAIN_FUNCTION_INDEX_REAR -> {
-                strActionName = Constants.MESSAGE_SEND_REAR
+            Constants.MAIN_FUNCTION_INDEX_GAS -> {
+                strActionName = Constants.MESSAGE_SEND_GAS
             }
+//            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+//                strActionName = Constants.MESSAGE_SEND_PRESSURE
+//            }
+//            Constants.MAIN_FUNCTION_INDEX_REAR -> {
+//                strActionName = Constants.MESSAGE_SEND_REAR
+//            }
             Constants.MAIN_FUNCTION_INDEX_UV -> {
                 strActionName = Constants.MESSAGE_SEND_UV
             }
@@ -207,22 +221,36 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
 //                            moveMainActivity()
                         }
                     }
-                    Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_PRESSURE)) {
-                            Log.e("eleutheria", "find device Pressure")
+                    Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
+                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_GAS)) {
+                            Log.e("eleutheria", "find device FineDust")
                             mBluetoothClassicManager.connect(Constants.strDeviceAddress)
 //                            moveMainActivity()
                         }
                     }
-                    Constants.MAIN_FUNCTION_INDEX_REAR -> {
-                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_REAR)) {
-                            Log.e("eleutheria", "find device Rear")
+                    Constants.MAIN_FUNCTION_INDEX_GAS -> {
+                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_GAS)) {
+                            Log.e("eleutheria", "find device Gas")
                             mBluetoothClassicManager.connect(Constants.strDeviceAddress)
 //                            moveMainActivity()
                         }
                     }
+//                    Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
+//                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_PRESSURE)) {
+//                            Log.e("eleutheria", "find device Pressure")
+//                            mBluetoothClassicManager.connect(Constants.strDeviceAddress)
+////                            moveMainActivity()
+//                        }
+//                    }
+//                    Constants.MAIN_FUNCTION_INDEX_REAR -> {
+//                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_REAR)) {
+//                            Log.e("eleutheria", "find device Rear")
+//                            mBluetoothClassicManager.connect(Constants.strDeviceAddress)
+////                            moveMainActivity()
+//                        }
+//                    }
                     Constants.MAIN_FUNCTION_INDEX_UV -> {
-                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_UV)) {
+                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_GAS)) {
                             Log.e("eleutheria", "find device UV")
                             mBluetoothClassicManager.connect(Constants.strDeviceAddress)
 //                            moveMainActivity()
@@ -236,7 +264,7 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
                         }
                     }
                     Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
-                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_TEMPERATURE)) {
+                        if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_GAS)) {
                             Log.e("eleutheria", "find device Temperature")
                             mBluetoothClassicManager.connect(Constants.strDeviceAddress)
 //                            moveMainActivity()

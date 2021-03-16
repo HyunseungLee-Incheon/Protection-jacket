@@ -21,6 +21,7 @@ import com.crc.masscustom.R
 import com.crc.masscustom.base.AvgData
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.database.DBTemperatureModel
 import io.realm.Realm
 import io.realm.RealmResults
@@ -95,8 +96,7 @@ class StatisticTemperatureDayFragment : Fragment()  {
 
 
 //        var nDay : Int = 2
-        var temperatureDataResult : RealmResults<DBTemperatureModel> = realm.where(
-            DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfDay)
+        var temperatureDataResult : RealmResults<DBTemperatureModel> = realm.where(DBTemperatureModel::class.java).equalTo("year", Constants.curYearOfDay)
             .equalTo( "month", Constants.curMonthOfDay )
             .equalTo("day", Constants.curDayOfDay)
             .findAll()
