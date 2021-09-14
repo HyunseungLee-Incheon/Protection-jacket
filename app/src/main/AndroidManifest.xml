@@ -17,25 +17,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".splash.SplashActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
 
-        </activity>
-        <activity android:name=".bluetooth.BluetoothActivity">
-<!--            <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN"/>-->
-<!--            <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity android:name=".main.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".bluetooth.BluetoothActivity" />
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN"/>-->
-<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
-<!--            </intent-filter>-->
-        </activity>
         <activity android:name=".main.MainGridActivity">
             <!--<meta-data-->
                     <!--android:name="android.support.PARENT_ACTIVITY"-->
@@ -70,11 +52,6 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".main.MainGridActivity" />
         </activity>
-        <!--<activity android:name=".battery.BatteryActivity">-->
-            <!--<meta-data-->
-                    <!--android:name="android.support.PARENT_ACTIVITY"-->
-                    <!--android:value=".Main.MainGridActivity" />-->
-        <!--</activity>-->
         <activity android:name=".pressure.PressureActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -123,12 +100,12 @@
         <activity android:name=".statistics.StatisticActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".statistics.StatisticGridActivity" />
+                    android:value=".statistics.StatisticSelActivity" />
         </activity>
         <activity android:name=".statistics.StatisticTemperatureActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".statistics.StatisticGridActivity" />
+                    android:value=".statistics.StatisticSelActivity" />
         </activity>
         <service android:name=".bluetooth.BluetoothLeService" android:enabled="true"/>
     </application>

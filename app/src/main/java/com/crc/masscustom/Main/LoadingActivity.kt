@@ -13,14 +13,14 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.PermissionChecker
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.bluetooth.BluetoothActivity
 import com.crc.masscustom.bluetooth.BluetoothLeService
 import com.crc.masscustom.bluetooth.SampleGattAttributes
 import com.crc.masscustom.finedust.FineDustActivity
@@ -28,17 +28,10 @@ import com.crc.masscustom.gas.GasActivity
 import com.crc.masscustom.gyro.GyroActivity
 import com.crc.masscustom.measure.HeartBeatMeasureActivity
 import com.crc.masscustom.measure.HeartBeatResultActivity
-import com.crc.masscustom.pressure.PressureActivity
-import com.crc.masscustom.rear.RearActivity
 import com.crc.masscustom.setting.SettingActivity
 import com.crc.masscustom.temperature.TemperatureActivity
 import com.crc.masscustom.uv.UvActivity
 import io.realm.log.RealmLog.debug
-import kotlinx.android.synthetic.main.activity_loading.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
-import org.jetbrains.anko.startActivity
 import java.util.ArrayList
 
 class LoadingActivity : AppCompatActivity(), View.OnClickListener {
@@ -66,7 +59,8 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_loading)
 
-        iv_loading_text.setOnClickListener(this)
+        var ivLoadingText : ImageView = findViewById(R.id.iv_loading_text)
+        ivLoadingText.setOnClickListener(this)
 
         val intent = intent
         if(intent != null) {
@@ -76,7 +70,7 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
         mHandler = Handler()
 
         if (PermissionChecker.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
 
@@ -96,7 +90,9 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -166,22 +162,6 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
             mScanning = false
             bluetoothLeScanner.stopScan(mLeScanCallback)
         }
-//        mBluetoothAdapter!!.startDiscovery()
-
-//        if (enable) {
-//            // Stops scanning after a pre-defined scan period.
-//            mHandler!!.postDelayed({
-//                mScanning = false
-//                mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
-//                invalidateOptionsMenu()
-//            }, Constants.SCAN_PERIOD)
-//
-//            mScanning = true
-//            mBluetoothAdapter!!.startLeScan(mLeScanCallback)
-//        } else {
-//            mScanning = false
-//            mBluetoothAdapter!!.stopLeScan(mLeScanCallback)
-//        }
     }
 
     private val mLeScanCallback = object : ScanCallback() {
@@ -215,18 +195,6 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
                         mBluetoothLeService!!.connect(strDeviceAddress)
                     }
                 }
-//                Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-//                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_PRESSURE)) {
-//                        Log.e("eleutheria", "find device Pressure")
-//                        mBluetoothLeService!!.connect(strDeviceAddress)
-//                    }
-//                }
-//                Constants.MAIN_FUNCTION_INDEX_REAR -> {
-//                    if(strDeviceAddress.equals(Constants.MODULE_ADDRESS_REAR)) {
-//                        Log.e("eleutheria", "find device Rear")
-//                        mBluetoothLeService!!.connect(strDeviceAddress)
-//                    }
-//                }
                 Constants.MAIN_FUNCTION_INDEX_UV -> {
                     if(strDeviceAddress == Constants.MODULE_ADDRESS_GAS) {
                         Log.e("eleutheria", "find device UV")
@@ -414,41 +382,43 @@ class LoadingActivity : AppCompatActivity(), View.OnClickListener {
 
         when(nFunctionIndex) {
             Constants.MAIN_FUNCTION_INDEX_HB -> {
-                startActivity<HeartBeatMeasureActivity>()
+                val intent = Intent(this, HeartBeatMeasureActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
-                startActivity<FineDustActivity>()
+                val intent = Intent(this, FineDustActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_GAS -> {
-                startActivity<GasActivity>()
+                val intent = Intent(this, GasActivity::class.java)
+                startActivity(intent)
             }
-//            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-//                startActivity<PressureActivity>()
-//            }
-//            Constants.MAIN_FUNCTION_INDEX_REAR -> {
-//                startActivity<RearActivity>()
-//            }
             Constants.MAIN_FUNCTION_INDEX_UV -> {
-                startActivity<UvActivity>()
+                val intent = Intent(this, UvActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_GYRO -> {
-                startActivity<GyroActivity>()
+                val intent = Intent(this, GyroActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
-                startActivity<TemperatureActivity>()
+                val intent = Intent(this, TemperatureActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_SETTING -> {
-                startActivity<SettingActivity>()
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_HB_RESULT -> {
-                startActivity<HeartBeatResultActivity>()
+                val intent = Intent(this, HeartBeatResultActivity::class.java)
+                startActivity(intent)
             }
         }
 
     }
 
     companion object {
-        private val TAG = BluetoothActivity::class.java!!.getSimpleName()
+        private val TAG = LoadingActivity::class.java!!.getSimpleName()
 
 
         var mBluetoothLeService: BluetoothLeService? = null

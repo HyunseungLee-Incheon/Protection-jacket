@@ -1,29 +1,21 @@
 package com.crc.masscustom.temperature
 
-import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.*
-import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.database.DBTemperatureModel
 import com.crc.masscustom.main.MainGridActivity
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_temperature.*
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 
 class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
@@ -34,31 +26,20 @@ class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var tvTemperatureText: TextView
     lateinit var ivTemperatureBg: ImageView
     var nTemperature = 0
-    var strReceiveData = ""
-
-//    private val mBtHandler = BluetoothHandler()
-//    private val mBluetoothClassicManager: BluetoothClassicManager = BluetoothClassicManager.getInstance()
-//    private var mIsConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_temperature)
 
-        tv_toolbar_title.text = getString(R.string.str_temperature_title)
-        bt_toolbar_back.setOnClickListener(this)
+        val tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_temperature_title)
+
+        val btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         tvTemperatureText = findViewById(R.id.tv_temperature_text)
         ivTemperatureBg = findViewById(R.id.iv_temperature_bg)
-
-//        mBluetoothClassicManager.setHandler(mBtHandler)
-//
-//        // Register for broadcasts when a device is discovered
-//        var filter = IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)
-//        this.registerReceiver(mReceiver, filter)
-//
-//
-//        mBluetoothClassicManager.connect(Constants.strDeviceAddress)
 
         displayTemperature(nTemperature)
     }
@@ -117,7 +98,9 @@ class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().newTask().clearTop())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun onResume() {
@@ -131,99 +114,13 @@ class TemperatureActivity : AppCompatActivity(), View.OnClickListener {
             if(intent!!.hasExtra("value")) {
                 val message = intent!!.getStringExtra("value")
 
-                saveTemperature(message.toInt())
-                displayTemperature(message.toInt())
-
-//                if(message.contains("\r\n")) {
-//                    strReceiveData += message
-//
-//                    val arData = strReceiveData.split(" : ")
-//
-//                    if(arData.size > 1) {
-//                        val arTempData = arData[1].split(".")
-////                        val arTempData = strTempData[0]
-//
-//                        nTemperature = arTempData[0].toInt()
-//                        saveTemperature(nTemperature)
-//                        displayTemperature(nTemperature)
-//                    }
-//                    strReceiveData = ""
-//
-//                } else {
-//                    strReceiveData += message
-//                }
+                if (message != null) {
+                    saveTemperature(message.toInt())
+                }
+                if (message != null) {
+                    displayTemperature(message.toInt())
+                }
             }
         }
-
     }
-
-    // The BroadcastReceiver that listens for discovered devices and
-    // changes the title when discovery is finished
-//    private val mReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context, intent: Intent) {
-//            val action = intent.action
-//
-//            // When discovery finds a device
-//            if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED == action) {
-//                val scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, -1)
-//                val prevMode = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_SCAN_MODE, -1)
-//                when(scanMode) {
-//                    BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE -> {
-//                        mBluetoothClassicManager.start()
-//                        Log.e("eleutheria", "SCAN_MODE_CONNECTABLE_DISCOVERABLE")
-//                    }
-//                    BluetoothAdapter.SCAN_MODE_CONNECTABLE -> {
-//                        Log.e("eleutheria", "SCAN_MODE_CONNECTABLE")
-//                    }
-//                    BluetoothAdapter.SCAN_MODE_NONE -> {
-//                        // Bluetooth is not enabled
-//                        Log.e("eleutheria", "SCAN_MODE_NONE")
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    inner class BluetoothHandler : Handler() {
-//        override fun handleMessage(msg: Message) {
-//            when (msg.what) {
-//                BluetoothClassicManager.MESSAGE_READ -> {
-//                    if (msg.obj != null) {
-//
-//                        val readBuf = msg.obj as ByteArray
-//                        // construct a string from the valid bytes in the buffer
-//                        val readMessage = String(readBuf, 0, msg.arg1)
-//                        Log.e("eleutheria", "MESSAGE_READ : $readMessage")
-//                    }
-//                }
-//                BluetoothClassicManager.MESSAGE_STATE_CHANGE -> {
-//                    when(msg.arg1) {
-//                        BluetoothClassicManager.STATE_NONE -> {    // we're doing nothing
-//                            Log.e("eleutheria", "STATE_NONE")
-//                            mIsConnected = false
-//                        }
-//                        BluetoothClassicManager.STATE_LISTEN -> {  // now listening for incoming connections
-//                            Log.e("eleutheria", "STATE_LISTEN")
-//                            mIsConnected = false
-//                        }
-//                        BluetoothClassicManager.STATE_CONNECTING -> {  // connecting to remote
-//                            Log.e("eleutheria", "STATE_CONNECTING")
-//
-//                        }
-//                        BluetoothClassicManager.STATE_CONNECTED -> {   // now connected to a remote device
-//                            Log.e("eleutheria", "STATE_CONNECTED")
-//                            mIsConnected = true
-//                        }
-//                    }
-//                }
-//                BluetoothClassicManager.MESSAGE_DEVICE_NAME -> {
-//                    if(msg.data != null) {
-//                        Log.e("eleutheria", "MESSAGE_DEVICE_NAME")
-//                    }
-//                }
-//            }
-//
-//            super.handleMessage(msg)
-//        }
-//    }
 }

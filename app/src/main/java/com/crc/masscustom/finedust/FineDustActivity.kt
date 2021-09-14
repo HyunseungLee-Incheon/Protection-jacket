@@ -5,19 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_temperature.*
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class FineDustActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,8 +29,11 @@ class FineDustActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_finedust)
 
-        tv_toolbar_title.text = getString(R.string.str_finedust_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_finedust_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         tvFineDustText = findViewById(R.id.tv_finedust_text)
         ivFineDustBg = findViewById(R.id.iv_finedust_bg)
@@ -64,7 +63,10 @@ class FineDustActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
 //        super.onBackPressed()
-        startActivity(intentFor<MainGridActivity>().newTask().clearTop())
+
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private val mMessageReceiver = object : BroadcastReceiver() {

@@ -1,13 +1,11 @@
 package com.crc.masscustom.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class LoadingResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +20,10 @@ class LoadingResultActivity : AppCompatActivity() {
 
     private fun <T> startToActivity() {
         Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_HB_RESULT
-        startActivity(intentFor<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB_RESULT).clearTask().newTask())
+
+        val intent = Intent(this, LoadingActivity::class.java)
+        intent.putExtra(Constants.HB_MEASUREMENT_DATA, Constants.MAIN_FUNCTION_INDEX_HB_RESULT)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
