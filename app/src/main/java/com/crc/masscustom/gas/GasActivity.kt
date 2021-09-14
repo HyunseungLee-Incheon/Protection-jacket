@@ -5,19 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_temperature.*
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class GasActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -35,8 +32,11 @@ class GasActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_gas)
 
-        tv_toolbar_title.text = getString(R.string.str_gas_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_gas_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         tvCO2Text = findViewById(R.id.tv_co2_text)
         tvTVOCText = findViewById(R.id.tv_tvoc_text)
@@ -69,7 +69,10 @@ class GasActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
 //        super.onBackPressed()
-        startActivity(intentFor<MainGridActivity>().newTask().clearTop())
+
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private val mMessageReceiver = object : BroadcastReceiver() {
@@ -78,12 +81,14 @@ class GasActivity : AppCompatActivity(), View.OnClickListener {
                 val message = intent!!.getStringExtra("value")
                 Log.d("eleutheria", String.format("Gas Value : $message"))
 
-                if(message.contains(Constants.RECIEVE_DATA_PREFIX_CO2)) {
-                    val subData = message.substring(2)
-                    tvCO2Text.text = subData
-                } else if(message.contains(Constants.RECIEVE_DATA_PREFIX_TVOC)){
-                    val subData = message.substring(4)
-                    tvTVOCText.text = subData
+                if (message != null) {
+                    if(message.contains(Constants.RECIEVE_DATA_PREFIX_CO2)) {
+                        val subData = message.substring(2)
+                        tvCO2Text.text = subData
+                    } else if(message.contains(Constants.RECIEVE_DATA_PREFIX_TVOC)){
+                        val subData = message.substring(4)
+                        tvTVOCText.text = subData
+                    }
                 }
             }
         }

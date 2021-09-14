@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -46,9 +46,9 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 <!--    <FrameLayout-->
 <!--            android:id="@+id/flFragContainer"-->
@@ -70,16 +70,17 @@
             android:layout_marginTop="40dp"
             app:layout_constraintVertical_bias="0.0"
             android:clickable="true"/>
+
     <TextView
-            android:text="@string/str_measure_preparing"
-            android:layout_width="wrap_content"
-            android:layout_height="27dp"
-            android:id="@+id/tvLoading"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintTop_toBottomOf="@+id/ivLoading" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toTopOf="@+id/ivLoading"/>
+        android:id="@+id/tvLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:text="@string/str_measure_preparing"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLoading"
+        app:layout_constraintEnd_toEndOf="@+id/ivLoading"
+        app:layout_constraintStart_toStartOf="@+id/ivLoading"
+        app:layout_constraintTop_toTopOf="@+id/ivLoading" />
     <TextView
             android:text="@string/str_measure_info"
             android:layout_width="wrap_content"
@@ -89,4 +90,4 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textAlignment="center" android:lineSpacingExtra="10sp"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

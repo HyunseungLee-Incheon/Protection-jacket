@@ -8,30 +8,21 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.PermissionChecker
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.BluetoothClassicManager
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.bluetooth.BluetoothActivity
-import com.crc.masscustom.bluetooth.BluetoothLeService
 import com.crc.masscustom.finedust.FineDustActivity
 import com.crc.masscustom.gas.GasActivity
 import com.crc.masscustom.gyro.GyroActivity
 import com.crc.masscustom.measure.HeartBeatMeasureActivity
-import com.crc.masscustom.pressure.PressureActivity
-import com.crc.masscustom.rear.RearActivity
 import com.crc.masscustom.temperature.TemperatureActivity
 import com.crc.masscustom.uv.UvActivity
-import kotlinx.android.synthetic.main.activity_loading.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
-import org.jetbrains.anko.startActivity
 
 class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
     override fun onClick(v: View?) {
@@ -49,14 +40,15 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
 
         setContentView(R.layout.activity_loading)
 
-        iv_loading_text.setOnClickListener(this)
+        var ivLoadingText : ImageView = findViewById(R.id.iv_loading_text)
+        ivLoadingText.setOnClickListener(this)
 
         val intent = intent
         if(intent != null) {
             nFunctionIndex = intent.getIntExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_STATISTICS)
         }
 
-        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
 
@@ -98,7 +90,9 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -136,28 +130,28 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
 
         when(nFunctionIndex) {
             Constants.MAIN_FUNCTION_INDEX_HB -> {
-                startActivity<HeartBeatMeasureActivity>()
+                val intent = Intent(this, HeartBeatMeasureActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_FINEDUST -> {
-                startActivity<FineDustActivity>()
+                val intent = Intent(this, FineDustActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_GAS -> {
-                startActivity<GasActivity>()
+                val intent = Intent(this, GasActivity::class.java)
+                startActivity(intent)
             }
-//            Constants.MAIN_FUNCTION_INDEX_PRESSURE -> {
-//                startActivity<PressureActivity>()
-//            }
-//            Constants.MAIN_FUNCTION_INDEX_REAR -> {
-//                startActivity<RearActivity>()
-//            }
             Constants.MAIN_FUNCTION_INDEX_UV -> {
-                startActivity<UvActivity>()
+                val intent = Intent(this, UvActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_GYRO -> {
-                startActivity<GyroActivity>()
+                val intent = Intent(this, GyroActivity::class.java)
+                startActivity(intent)
             }
             Constants.MAIN_FUNCTION_INDEX_TEMPERATURE -> {
-                startActivity<TemperatureActivity>()
+                val intent = Intent(this, TemperatureActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -209,7 +203,7 @@ class LoadingClassicActivity : AppCompatActivity(), View.OnClickListener  {
             if (BluetoothDevice.ACTION_FOUND == action) {
                 // Get the BluetoothDevice object from the Intent
                 val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                var strDeviceAddress = device.address
+                var strDeviceAddress = device!!.address
                 Constants.strDeviceAddress = strDeviceAddress
                 Log.e("eleutheria", "address : ${strDeviceAddress}")
 

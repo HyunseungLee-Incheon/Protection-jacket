@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
@@ -14,12 +12,12 @@ import android.widget.ImageView
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_pressure.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 import java.util.*
 import android.net.Uri
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class PressureActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -35,8 +33,11 @@ class PressureActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_pressure)
 
-        tv_toolbar_title.text = getString(R.string.str_pressure_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_pressure_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         iv_alert = findViewById<ImageView>(R.id.iv_alert)
         iv_alert.setOnClickListener(this)
@@ -83,7 +84,9 @@ class PressureActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
 

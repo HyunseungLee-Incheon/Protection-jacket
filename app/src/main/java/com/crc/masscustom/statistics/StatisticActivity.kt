@@ -1,21 +1,19 @@
 package com.crc.masscustom.statistics
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_statistic.*
-import kotlinx.android.synthetic.main.activity_statistic.bt_toolbar_back
-import kotlinx.android.synthetic.main.activity_statistic.tv_toolbar_title
-import kotlinx.android.synthetic.main.activity_statistic_sel.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class StatisticActivity : AppCompatActivity(), View.OnClickListener {
+
+    private lateinit var btStatisticDay : Button
+    private lateinit var btStatisticMonth : Button
 
     var frgStatisticDay = StasticDayFragment()
     var frgStatisticMonth = StatisticMonthFragment()
@@ -24,15 +22,19 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistic)
 
-        tv_toolbar_title.text = getString(R.string.str_statistic_HeartBeat_title)
-        bt_toolbar_back.setOnClickListener(this)
+        val tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_statistic_HeartBeat_title)
 
-//        setTitle(R.string.str_statistic_HeartBeat_title)
+        val btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
-//        tvDeviceName.text = Constants.strDeviceName
 
-        bt_statistic_day.setOnClickListener(this)
-        bt_statistic_month.setOnClickListener(this)
+        btStatisticDay = findViewById(R.id.bt_statistic_day)
+        btStatisticDay.setOnClickListener(this)
+
+        btStatisticMonth = findViewById(R.id.bt_statistic_month)
+        btStatisticMonth.setOnClickListener(this)
+
 
         setCurrentButtonState()
 
@@ -56,7 +58,9 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<StatisticSelActivity>().clearTask().newTask())
+        val intent = Intent(this, StatisticSelActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun changeFragment(frag : Fragment) {
@@ -77,11 +81,11 @@ class StatisticActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setCurrentButtonState() {
         if(Constants.STASTIC_CURRENT_STATE == "DAY") {
-            bt_statistic_day.setBackgroundResource(R.drawable.statistics_daily_daily_button_normal)
-            bt_statistic_month.setBackgroundResource(R.drawable.statistics_daily_monthly_button_normal)
+            btStatisticDay.setBackgroundResource(R.drawable.statistics_daily_daily_button_normal)
+            btStatisticMonth.setBackgroundResource(R.drawable.statistics_daily_monthly_button_normal)
         } else {
-            bt_statistic_day.setBackgroundResource(R.drawable.statistics_monthly_daily_button_normal)
-            bt_statistic_month.setBackgroundResource(R.drawable.statistics_monthly_monthly_button_normal)
+            btStatisticDay.setBackgroundResource(R.drawable.statistics_monthly_daily_button_normal)
+            btStatisticMonth.setBackgroundResource(R.drawable.statistics_monthly_monthly_button_normal)
         }
     }
 }

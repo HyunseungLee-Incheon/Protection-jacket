@@ -6,20 +6,18 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
 import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_rear.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class RearActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -45,8 +43,11 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_rear)
 
-        tv_toolbar_title.text = getString(R.string.str_rear_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_rear_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         val commonUtils = CommonUtils()
 
@@ -216,7 +217,9 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun onResume() {
@@ -232,49 +235,51 @@ class RearActivity : AppCompatActivity(), View.OnClickListener {
 
                 val commonUtils = CommonUtils()
 
-                if(message.contains("\r\n")) {
-                    strReceiveData += message
-                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
-                    var arData = strReceiveData.split(".")
+                if (message != null) {
+                    if(message.contains("\r\n")) {
+                        strReceiveData += message
+                        Log.e("eleutheria", "strReceiveData : $strReceiveData")
+                        var arData = strReceiveData.split(".")
 
-                    if(arData.size > 2) {
-                        val strLeft = arData[0]
-                        val strBack = arData[1]
-                        val strRight = arData[2]
+                        if(arData.size > 2) {
+                            val strLeft = arData[0]
+                            val strBack = arData[1]
+                            val strRight = arData[2]
 
-                        val arDataL = strLeft.split(" ")
-                        val arDataB = strBack.split(" ")
-                        val arDataR = strRight.split(" ")
+                            val arDataL = strLeft.split(" ")
+                            val arDataB = strBack.split(" ")
+                            val arDataR = strRight.split(" ")
 
-                        val fLeftDistance = arDataL[1].toFloat()
-                        val fBackDistance = arDataB[1].toFloat()
-                        val fRightDistance = arDataR[1].toFloat()
+                            val fLeftDistance = arDataL[1].toFloat()
+                            val fBackDistance = arDataB[1].toFloat()
+                            val fRightDistance = arDataR[1].toFloat()
 
-//                        Log.e("eleutheria", "fLeftDistance : $fLeftDistance, fBackDistance : $fBackDistance, fRightDistance : $fRightDistance")
-                        val nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 100)
-                        val nBackRear = commonUtils.calcRearDetect(fBackDistance / 100)
-                        val nRightRear = commonUtils.calcRearDetect(fRightDistance / 100)
+            //                        Log.e("eleutheria", "fLeftDistance : $fLeftDistance, fBackDistance : $fBackDistance, fRightDistance : $fRightDistance")
+                            val nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 100)
+                            val nBackRear = commonUtils.calcRearDetect(fBackDistance / 100)
+                            val nRightRear = commonUtils.calcRearDetect(fRightDistance / 100)
 
-                        displayLeftRear(nLeftRear)
-                        displayRightRear(nRightRear)
-                        displayBackRear(nBackRear)
+                            displayLeftRear(nLeftRear)
+                            displayRightRear(nRightRear)
+                            displayBackRear(nBackRear)
 
-                        if((fLeftDistance <= 0.3F) || (fRightDistance <= 0.3F) || (fBackDistance <= 0.3F)) {
-                            sendCall()
-                            sendSMS()
+                            if((fLeftDistance <= 0.3F) || (fRightDistance <= 0.3F) || (fBackDistance <= 0.3F)) {
+                                sendCall()
+                                sendSMS()
+                            }
                         }
+
+                        if(arData.size > 8) {
+                            var fLeftDistance = arData[3].toFloat()
+                            var fBackDistance = arData[5].toFloat()
+                            var fRightDistance = arData[7].toFloat()
+
+
+                        }
+                        strReceiveData = ""
+                    } else {
+                        strReceiveData += message
                     }
-
-                    if(arData.size > 8) {
-                        var fLeftDistance = arData[3].toFloat()
-                        var fBackDistance = arData[5].toFloat()
-                        var fRightDistance = arData[7].toFloat()
-
-
-                    }
-                    strReceiveData = ""
-                } else {
-                    strReceiveData += message
                 }
             }
         }

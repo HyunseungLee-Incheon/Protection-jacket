@@ -1,11 +1,11 @@
 package com.crc.masscustom.measure
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.CommonUtils
 import com.crc.masscustom.base.Constants
@@ -15,12 +15,6 @@ import com.crc.masscustom.database.DBHeartBeatModel
 import com.crc.masscustom.main.LoadingActivity
 import com.crc.masscustom.main.MainGridActivity
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main_grid.tv_toolbar_title
-import kotlinx.android.synthetic.main.activity_pressure.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.clearTop
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -38,26 +32,22 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_heartbeatresult)
 
-        tv_toolbar_title.text = getString(R.string.str_measure_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_measure_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         val commonUtils = CommonUtils()
-
-//        val intent = intent
-//        if(intent != null) {
-//            arHBData = intent.getStringArrayListExtra(Constants.HB_MEASUREMENT_DATA)
-//            Log.e("eleutheria", "arHBData : Size $arHBData")
-//        }
 
         tvResultDate = findViewById<TextView>(R.id.tvResultDate)
         tvResultHB = findViewById<TextView>(R.id.tvResultHB)
 
         val avgHeartBeat = Constants.nAvgHeartBeat
 
-//        val alMeasureHeartBeat = arHBData
-
 //        val avgHeartBeat = sumHeartBeat(alMeasureHeartBeat).toInt()
-        //avgHeartBeat = 76
+//        avgHeartBeat = 76
+
         setResultHB(avgHeartBeat)
 
         val curDate = commonUtils.getCurrentDate()
@@ -66,7 +56,6 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
         val btSaveResult = findViewById<Button>(R.id.btSaveResult)
         btSaveResult.setOnClickListener {
-            //            Log.e("eleutheria", "Save Button Click!!")
 
             realm.beginTransaction()
 
@@ -92,22 +81,6 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
 
         LoadingActivity.mBluetoothLeService!!.writeCharacteristic(avgHeartBeat.toString())
     }
-
-//    private fun sumHeartBeat(measuredHeartBeat: ArrayList<String>): Long {
-//
-//        var sumHeartBeat : Long = 0
-//
-//        for(heartBeat in measuredHeartBeat) {
-//            sumHeartBeat += heartBeat.toInt()
-//        }
-//
-//        var avgHeartBeat : Long = 0
-//        if(sumHeartBeat > 0) {
-//            avgHeartBeat = sumHeartBeat / measuredHeartBeat.size
-//        }
-//
-//        return avgHeartBeat
-//    }
 
     private fun setCurDate(curDate : List<String>) {
         var curYYMMDD = "${curDate[0]}/${curDate[1]}/${curDate[2]}"
@@ -137,10 +110,14 @@ class HeartBeatResultActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun finishResult() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }

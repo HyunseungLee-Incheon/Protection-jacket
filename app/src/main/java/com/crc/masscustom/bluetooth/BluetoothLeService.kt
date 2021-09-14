@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.base.Constants
 import java.math.BigInteger
 import java.util.*
@@ -206,7 +206,7 @@ class BluetoothLeService: Service() {
             get() = this@BluetoothLeService
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         return mBinder
     }
 
@@ -490,26 +490,24 @@ class BluetoothLeService: Service() {
      */
     val supportedGattServices: List<BluetoothGattService>?
         get() {
-            if (mBluetoothGatt == null) return null
+            if (mBluetoothGatt == null) {
+                return null
+            }
 
-            return mBluetoothGatt!!.services
+            return this.mBluetoothGatt!!.services
         }
 
     companion object {
         private val TAG = BluetoothLeService::class.java.simpleName
 
-        private val STATE_DISCONNECTED = 0
-        private val STATE_CONNECTING = 1
-        private val STATE_CONNECTED = 2
+        const private val STATE_DISCONNECTED = 0
+        const private val STATE_CONNECTING = 1
+        const private val STATE_CONNECTED = 2
 
-        val ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED"
-        val ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED"
-        val ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED"
-        val ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE"
-        val EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA"
-
-//        val UUID_GYRO_MEASUREMENT = UUID.fromString(SampleGattAttributes.GYRO_MEASUREMENT)
-//        val UUID_UV_MEASUREMENT = UUID.fromString(SampleGattAttributes.UV_MEASUREMENT)
-//        val UUID_BEETLE_MEASUREMENT = UUID.fromString(SampleGattAttributes.BEETLE_MEASUREMENT)
+        const val ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED"
+        const val ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED"
+        const val ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED"
+        const val ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE"
+        const val EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA"
     }
 }

@@ -5,20 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.bluetooth.BluetoothActivity
-import com.crc.masscustom.main.LoadingActivity
 import com.crc.masscustom.main.LoadingResultActivity
 import com.crc.masscustom.main.MainGridActivity
-import kotlinx.android.synthetic.main.activity_main_grid.tv_toolbar_title
-import kotlinx.android.synthetic.main.activity_pressure.bt_toolbar_back
-import org.jetbrains.anko.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.timer
@@ -37,10 +33,14 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_heartbeatmeasure)
 
-        tv_toolbar_title.text = getString(R.string.str_measure_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_measure_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         tvLoading = findViewById(R.id.tvLoading)
         tvLoading?.text = "0 %"
@@ -65,7 +65,10 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(intentFor<MainGridActivity>().clearTask().newTask())
+
+        val intent = Intent(this, MainGridActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun onResume() {
@@ -111,11 +114,9 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
         val avgHeartBeat = sumHeartBeat(arHBData).toInt()
         Constants.nAvgHeartBeat = avgHeartBeat
 
-        startActivity<LoadingResultActivity>()
-//        Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_HB_RESULT
-//        startActivity(intentFor<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB_RESULT).clearTask().newTask())
+        val intent = Intent(this, LoadingResultActivity::class.java)
+        startActivity(intent)
 
-//        startActivity<HeartBeatResultActivity>(Constants.HB_MEASUREMENT_DATA to arHBData)
         Log.e("eleutheria", "finish measure")
     }
 
@@ -143,43 +144,12 @@ class HeartBeatMeasureActivity : AppCompatActivity(), View.OnClickListener {
 
                 if(Constants.bIsStartMeasure && !bIsFinish) {
                     Log.e("eleutheria", "HB : $message")
-                    if(message.toInt() > 0) {
-                        arHBData.add(message)
+                    if (message != null) {
+                        if(message.toInt() > 0) {
+                            arHBData.add(message)
+                        }
                     }
-//                                arHBData.add(data)
                 }
-
-//                if(message == ".") {
-////                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
-//                    var arData = strReceiveData.split("\r\n")
-//
-//                    for(data in arData) {
-//                        if(data.contains("HB")) {
-//                            if(Constants.bIsStartMeasure && !bIsFinish) {
-//                                Log.e("eleutheria", "HB : $data")
-//                                arHBData.add(data.substring(3))
-////                                arHBData.add(data)
-//                            }
-//                        }
-//                    }
-////                    if(arData.size > 8) {
-////                        var fLeftDistance = arData[3].toFloat()
-////                        var fBackDistance = arData[5].toFloat()
-////                        var fRightDistance = arData[7].toFloat()
-////
-////                        var nLeftRear = commonUtils.calcRearDetect(fLeftDistance / 1000)
-////                        var nBackRear = commonUtils.calcRearDetect(fBackDistance / 1000)
-////                        var nRightRear = commonUtils.calcRearDetect(fRightDistance / 1000)
-////
-////                        displayLeftRear(nLeftRear)
-////                        displayRightRear(nRightRear)
-////                        displayBackRear(nBackRear)
-////                    }
-//                    strReceiveData = ""
-//                } else {
-//                    strReceiveData += message
-////                    Log.e("eleutheria", "strReceiveData : $strReceiveData")
-//                }
             }
         }
     }

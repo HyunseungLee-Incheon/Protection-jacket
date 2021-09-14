@@ -3,29 +3,31 @@ package com.crc.masscustom.main
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.GridView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.crc.masscustom.R
 import com.crc.masscustom.base.*
-import com.crc.masscustom.finedust.FineDustActivity
-import com.crc.masscustom.gas.GasActivity
-import com.crc.masscustom.temperature.TemperatureActivity
-import com.crc.masscustom.gyro.GyroActivity
-import com.crc.masscustom.measure.HeartBeatMeasureActivity
 import com.crc.masscustom.setting.SettingActivity
 import com.crc.masscustom.statistics.StatisticSelActivity
-import com.crc.masscustom.uv.UvActivity
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main_grid.*
-import org.jetbrains.anko.startActivity
 import com.crc.masscustom.base.Constants
+import com.crc.masscustom.finedust.FineDustActivity
+import com.crc.masscustom.gas.GasActivity
+import com.crc.masscustom.gyro.GyroActivity
+import com.crc.masscustom.measure.HeartBeatMeasureActivity
+import com.crc.masscustom.measure.HeartBeatResultActivity
+import com.crc.masscustom.temperature.TemperatureActivity
+import com.crc.masscustom.uv.UvActivity
 
 
 class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
@@ -52,8 +54,9 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_grid)
 
-        tv_toolbar_title.text = getString(R.string.str_main_title)
-        tv_toolbar_title.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_main_title)
+        tvToolbarTitle.setOnClickListener(this)
 
         context = applicationContext
         mActivity = this
@@ -70,13 +73,17 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         )
 
         val listAdapter = MainGridAdapter(this, mainIconList)
+
+        var gvMainList : GridView = findViewById(R.id.gvMainList)
         gvMainList.adapter = listAdapter
         gvMainList.setOnItemClickListener(this)
 
         var preferences: SharedPreferences = getSharedPreferences(Constants.SHARED_PREF_SEUPDATA, Context.MODE_PRIVATE)
 
-        Constants.strHapticNumber = preferences.getString(Constants.PREF_HAPTIC_CALL_NUMBER, Constants.strHapticNumber)
-        Constants.strGyroNumber = preferences.getString(Constants.PREF_GYRO_CALL_NUMBER, Constants.strGyroNumber)
+        Constants.strHapticNumber =
+            preferences.getString(Constants.PREF_HAPTIC_CALL_NUMBER, Constants.strHapticNumber).toString()
+        Constants.strGyroNumber =
+            preferences.getString(Constants.PREF_GYRO_CALL_NUMBER, Constants.strGyroNumber).toString()
 
         var commonUtils = CommonUtils()
         var curDate = commonUtils.getCurrentDate()
@@ -128,52 +135,55 @@ class MainGridActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         when(position) {
             0 -> { // heartbeat
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_HB
-//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_HB)
-//                startActivity<HeartBeatMeasureActivity>()
-                startActivity<LoadingResultActivity>()
+
+                val intent = Intent(this, LoadingResultActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_HB)
+                startActivity(intent)
             }
             1 -> { // finedust
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_FINEDUST
-                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_FINEDUST)
-//                startActivity<FineDustActivity>()
+
+                val intent = Intent(this, LoadingActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_FINEDUST)
+                startActivity(intent)
             }
             2 -> { // gas
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_GAS
-                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_GAS)
-//                startActivity<GasActivity>()
+
+                val intent = Intent(this, LoadingActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_GAS)
+                startActivity(intent)
             }
-//            1 -> { // pressure
-//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_PRESSURE
-////                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_PRESSURE)
-//                startActivity<PressureActivity>()
-//            }
-//            2 -> { // rear
-//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_REAR
-////                startActivity<LoadingClassicActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_REAR)
-//                startActivity<RearActivity>()
-//            }
             3 -> { // uv
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_UV
-                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_UV)
-//                startActivity<UvActivity>()
+
+                val intent = Intent(this, LoadingActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_UV)
+                startActivity(intent)
             }
             4 -> { // gyro
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_GYRO
-//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_GYRO)
-                startActivity<GyroActivity>()
+
+                val intent = Intent(this, LoadingActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_GYRO)
+                startActivity(intent)
             }
             5 -> { // temperature
                 Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_TEMPERATURE
-                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_TEMPERATURE)
-//                startActivity<TemperatureActivity>()
+
+                val intent = Intent(this, LoadingActivity::class.java)
+                intent.putExtra(Constants.SELECT_FUNCTION_INDEX, Constants.MAIN_FUNCTION_INDEX_TEMPERATURE)
+                startActivity(intent)
             }
             6 -> { // statistic
-                startActivity<StatisticSelActivity>()
+
+                val intent = Intent(this, StatisticSelActivity::class.java)
+                startActivity(intent)
             }
             7 -> { // setting
-//                Constants.nCurFunctionIndex = Constants.MAIN_FUNCTION_INDEX_SETTING
-//                startActivity<LoadingActivity>(Constants.SELECT_FUNCTION_INDEX to Constants.MAIN_FUNCTION_INDEX_SETTING)
-                startActivity<SettingActivity>()
+
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
             }
         }
     }

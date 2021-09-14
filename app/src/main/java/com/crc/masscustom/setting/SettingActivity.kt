@@ -6,13 +6,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.crc.masscustom.R
 import com.crc.masscustom.base.Constants
-import com.crc.masscustom.main.LoadingActivity
-import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -26,8 +25,11 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
 
         setContentView(R.layout.activity_setting)
 
-        tv_toolbar_title.text = getString(R.string.str_setting_title)
-        bt_toolbar_back.setOnClickListener(this)
+        var tvToolbarTitle : TextView = findViewById(R.id.tv_toolbar_title)
+        tvToolbarTitle.text = getString(R.string.str_setting_title)
+
+        var btToolbarBack : Button = findViewById(R.id.bt_toolbar_back)
+        btToolbarBack.setOnClickListener(this)
 
         settings = getSharedPreferences(Constants.SHARED_PREF_SEUPDATA, Context.MODE_PRIVATE)
 
@@ -41,12 +43,23 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         tvGyroNumber.text = Constants.strGyroNumber
         tvEmergencyNumber.text = Constants.strEmergencyNumber
 
-        bt_pressure_112.setOnClickListener(this)
-        bt_pressure_contact.setOnClickListener(this)
-        bt_gyro_119.setOnClickListener(this)
-        bt_gyro_contact.setOnClickListener(this)
-        bt_emergency_119.setOnClickListener(this)
-        bt_emergency_contact.setOnClickListener(this)
+        val btPressure112 : Button = findViewById(R.id.bt_pressure_112)
+        btPressure112.setOnClickListener(this)
+
+        val btPressureContact : Button = findViewById(R.id.bt_pressure_contact)
+        btPressureContact.setOnClickListener(this)
+
+        val btGyro119 : Button = findViewById(R.id.bt_gyro_119)
+        btGyro119.setOnClickListener(this)
+
+        val btGyroContact : Button = findViewById(R.id.bt_gyro_contact)
+        btGyroContact.setOnClickListener(this)
+
+        val btEmergency119 : Button = findViewById(R.id.bt_emergency_119)
+        btEmergency119.setOnClickListener(this)
+
+        val btEmergencyContact : Button = findViewById(R.id.bt_emergency_contact)
+        btEmergencyContact.setOnClickListener(this)
 
     }
 
